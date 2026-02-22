@@ -2,215 +2,1990 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jia Sourcing — Setup</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julia — Jia PM Practical — Sourcing Feature</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --bg: #ffffff;
+            --surface: #f8f9fa;
+            --card: #f3f4f6;
+            --border: #e2e4e9;
+            --accent: #5b4cdb;
+            --accent2: #5b4cdb;
+            --accent3: #e84393;
+            --green: #00a884;
+            --orange: #e67e22;
+            --red: #d63031;
+            --text: #1a1a2e;
+            --text2: #4a4a6a;
+            --text3: #8a8aa0;
+        }
+
+        html,
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100%;
+            width: 100%
+        }
+
+        /* Slide container */
+        .deck {
+            position: relative;
+            width: 100%;
+            height: 100%
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            padding: 56px 72px;
+            overflow: hidden
+        }
+
+        .slide.active {
+            display: flex
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: 24px;
+            right: 32px;
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+            align-items: center
+        }
+
+        .nav button {
+            background: rgba(0, 0, 0, .06);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .2s
+        }
+
+        .nav button:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff
+        }
+
+        .nav .counter {
+            font-size: 12px;
+            color: var(--text3);
+            font-variant-numeric: tabular-nums;
+            min-width: 50px;
+            text-align: center
+        }
+
+        /* Progress bar */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent3));
+            transition: width .3s ease;
+            z-index: 101
+        }
+
+        /* Typography */
+        .slide h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #1a1a2e, var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .slide h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text)
+        }
+
+        .slide h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent2);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 13px
+        }
+
+        .slide p,
+        .slide li {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text2)
+        }
+
+        .slide .subtitle {
+            font-size: 18px;
+            color: var(--text2);
+            margin-bottom: 24px;
+            font-weight: 400
+        }
+
+        .slide .lead {
+            font-size: 20px;
+            color: var(--text);
+            font-weight: 500;
+            line-height: 1.5;
+            margin-bottom: 20px
+        }
+
+        /* Section labels */
+        .section-tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 16px
+        }
+
+        .section-tag.a {
+            background: rgba(108, 92, 231, .15);
+            color: var(--accent2)
+        }
+
+        .section-tag.b {
+            background: rgba(253, 121, 168, .15);
+            color: var(--accent3)
+        }
+
+        .section-tag.c {
+            background: rgba(0, 184, 148, .15);
+            color: var(--green)
+        }
+
+        .section-tag.d {
+            background: rgba(253, 203, 110, .15);
+            color: var(--orange)
+        }
+
+        .section-tag.e {
+            background: rgba(225, 112, 85, .15);
+            color: var(--red)
+        }
+
+        /* Cards & grids */
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            flex: 1
+        }
+
+        .grid3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px
+        }
+
+        .grid4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px
+        }
+
+        .card h4 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text)
+        }
+
+        .card p,
+        .card li {
+            font-size: 13px;
+            color: var(--text2);
+            line-height: 1.5
+        }
+
+        .card ul {
+            padding-left: 16px
+        }
+
+        .card.accent {
+            border-color: rgba(108, 92, 231, .3);
+            background: rgba(108, 92, 231, .06)
+        }
+
+        .card.green {
+            border-color: rgba(0, 184, 148, .3);
+            background: rgba(0, 184, 148, .06)
+        }
+
+        .card.pink {
+            border-color: rgba(253, 121, 168, .3);
+            background: rgba(253, 121, 168, .06)
+        }
+
+        /* Stats */
+        .stat {
+            text-align: center;
+            padding: 16px
+        }
+
+        .stat .num {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .stat .label {
+            font-size: 12px;
+            color: var(--text3);
+            margin-top: 4px
+        }
+
+        /* Tables */
+        .deck-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px
+        }
+
+        .deck-table th {
+            text-align: left;
+            padding: 10px 12px;
+            background: var(--card);
+            color: var(--accent2);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .deck-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text2);
+            vertical-align: top
+        }
+
+        .deck-table tr:last-child td {
+            border-bottom: none
+        }
+
+        .deck-table .priority {
+            font-weight: 700
+        }
+
+        .deck-table .p0 {
+            color: var(--red)
+        }
+
+        .deck-table .p1 {
+            color: var(--orange)
+        }
+
+        .deck-table .p2 {
+            color: var(--green)
+        }
+
+        /* Competitor screenshots */
+        .screenshot {
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .1)
+        }
+
+        .screenshot-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 8px;
+            overflow: hidden
+        }
+
+        /* Quote */
+        .quote {
+            border-left: 3px solid var(--accent);
+            padding: 16px 20px;
+            background: rgba(108, 92, 231, .06);
+            border-radius: 0 8px 8px 0;
+            margin: 12px 0;
+            font-style: italic;
+            color: var(--text);
+            font-size: 15px
+        }
+
+        /* Flow steps */
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin: 16px 0;
+            flex-wrap: wrap
+        }
+
+        .flow .step {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--text2);
+            font-weight: 500
+        }
+
+        .flow .arrow {
+            color: var(--accent);
+            font-size: 16px
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600
+        }
+
+        .badge.good {
+            background: rgba(0, 184, 148, .15);
+            color: var(--green)
+        }
+
+        .badge.warn {
+            background: rgba(253, 203, 110, .15);
+            color: var(--orange)
+        }
+
+        .badge.bad {
+            background: rgba(225, 112, 85, .15);
+            color: var(--red)
+        }
+
+        /* Comparison matrix checkmarks */
+        .check {
+            color: var(--green);
+            font-weight: 700
+        }
+
+        .cross {
+            color: var(--red);
+            font-weight: 700
+        }
+
+        .partial {
+            color: var(--orange);
+            font-weight: 700
+        }
+
+        /* Title slide */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(ellipse at 30% 50%, rgba(108, 92, 231, .12), transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(253, 121, 168, .08), transparent 50%)
+        }
+
+        .title-slide h1 {
+            font-size: 56px;
+            margin-bottom: 12px
+        }
+
+        .title-slide .subtitle {
+            font-size: 20px
+        }
+
+        /* Divider slide */
+        .divider-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(ellipse at 50% 50%, rgba(108, 92, 231, .1), transparent 60%)
+        }
+
+        .divider-slide h1 {
+            font-size: 48px;
+            margin-bottom: 16px
+        }
+
+        /* Wireframe embed */
+        .wireframe-wrap {
+            background: var(--card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            flex: 1;
+            display: flex
+        }
+
+        .wireframe-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none
+        }
+
+        /* Footer */
+        .slide-footer {
+            margin-top: auto;
+            padding-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text3)
+        }
+
+        /* Highlight */
+        .hl {
+            color: var(--accent2);
+            font-weight: 600
+        }
+
+        .hl-pink {
+            color: var(--accent3);
+            font-weight: 600
+        }
+
+        .hl-green {
+            color: var(--green);
+            font-weight: 600
+        }
+
+        /* Spacing helpers */
+        .mt8 {
+            margin-top: 8px
+        }
+
+        .mt12 {
+            margin-top: 12px
+        }
+
+        .mt16 {
+            margin-top: 16px
+        }
+
+        .mt20 {
+            margin-top: 20px
+        }
+
+        .mt24 {
+            margin-top: 24px
+        }
+
+        .mb8 {
+            margin-bottom: 8px
+        }
+
+        .mb12 {
+            margin-bottom: 12px
+        }
+
+        .mb16 {
+            margin-bottom: 16px
+        }
+
+        .flex1 {
+            flex: 1
+        }
+
+        .overflow-auto {
+            overflow: auto
+        }
+
+        .small {
+            font-size: 13px
+        }
+
+        .xsmall {
+            font-size: 11px
+        }
+    </style>
 </head>
 
 <body>
-  <div class="app-layout">
-    <aside class="sidebar" id="sidebar"></aside>
 
-    <main class="main-content">
-      <!-- Step 1: Upload -->
-      <div id="step-upload">
-        <div class="page-header" style="text-align: center; max-width: 600px; margin: 0 auto 40px;">
-          <div style="font-size: 48px; margin-bottom: 16px;">🎉</div>
-          <h1
-            style="font-size: 32px; margin-bottom: 12px; background: linear-gradient(90deg, rgb(159, 202, 237) 0%, rgb(206, 182, 218) 33%, rgb(235, 172, 201) 66%, rgb(252, 206, 192) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-            Introducing: Sourcing
-          </h1>
-          <p class="subtitle" style="font-size: 16px; line-height: 1.6;">
-            Find the right candidates already in your database — powered by AI.
-            <br>Upload your candidate database to get started.
-          </p>
-        </div>
+    <div class="progress" id="progress"></div>
 
-        <!-- Progress indicator -->
-        <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 40px;">
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <div
-              style="width: 28px; height: 28px; border-radius: 50%; background: #1a1a2e; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white;">
-              1</div>
-            <span style="font-size: 13px; color: #32325d; font-weight: 500;">Upload</span>
-          </div>
-          <div style="width: 40px; height: 1px; background: #e2e8f0; margin-top: 14px;"></div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <div
-              style="width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #8898aa;">
-              2</div>
-            <span style="font-size: 13px; color: #8898aa; font-weight: 500;">AI Parsing</span>
-          </div>
-          <div style="width: 40px; height: 1px; background: #e2e8f0; margin-top: 14px;"></div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <div
-              style="width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #8898aa;">
-              3</div>
-            <span style="font-size: 13px; color: #8898aa; font-weight: 500;">Ready</span>
-          </div>
-        </div>
+    <div class="deck" id="deck">
 
-        <!-- Upload zone -->
-        <div style="max-width: 560px; margin: 0 auto;">
-          <div class="upload-zone" id="uploadZone" onclick="startProcessing()">
-            <div class="upload-icon">📁</div>
-            <div class="upload-text">Drag & drop your candidate database here</div>
-            <div class="upload-hint" style="margin-bottom: 16px;">or click to browse files</div>
-            <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
-              <span class="badge badge-purple">.csv</span>
-              <span class="badge badge-purple">.xlsx</span>
-              <span class="badge badge-purple">.json</span>
+        <!-- ========== SLIDE 1: TITLE ========== -->
+        <div class="slide title-slide active">
+            <div class="section-tag a" style="margin-bottom:24px">Jia PM Practical Exam</div>
+            <h1>Sourcing</h1>
+            <p class="subtitle" style="max-width:640px;margin:0 auto 20px">AI-First Candidate Sourcing & Re-engagement
+                for Staffing Firms</p>
+            <p style="color:var(--text3);font-size:14px">A New Feature Module Within the Jia Platform</p>
+            <div style="margin-top:48px;display:flex;gap:24px;justify-content:center;align-items:center">
+                <span style="font-size:14px;color:var(--text2)">Julia</span>
+                <span style="color:var(--text3)">·</span>
+                <span style="font-size:14px;color:var(--text2)">February 2026</span>
             </div>
-            <div class="upload-hint" style="margin-top: 12px;">Max file size: 50MB</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 2: AI Processing -->
-      <div id="step-processing" style="display: none;">
-        <div class="page-header" style="text-align: center; max-width: 600px; margin: 0 auto 40px;">
-          <h1
-            style="font-size: 28px; margin-bottom: 12px; background: linear-gradient(90deg, rgb(159, 202, 237) 0%, rgb(206, 182, 218) 33%, rgb(235, 172, 201) 66%, rgb(252, 206, 192) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-            AI is Parsing Your Database
-          </h1>
-          <p class="subtitle">This usually takes about 2 minutes</p>
+            <a href="setup.html" target="_blank"
+                style="margin-top:32px;display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--accent);color:#fff;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;transition:.2s;box-shadow:0 4px 16px rgba(91,76,219,.25)"
+                onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(91,76,219,.35)'"
+                onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(91,76,219,.25)'">🖥️ View
+                Interactive Prototype</a>
         </div>
 
-        <div style="max-width: 560px; margin: 0 auto;">
-          <div class="glass-card no-hover" style="margin-bottom: 24px;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
-              <span style="font-size: 14px; color: var(--jia-text-secondary);">📄 candidates_2024.csv</span>
-              <span class="progress-percent"
-                style="font-size: 14px; font-weight: 600; color: var(--jia-text-secondary);">0%</span>
+        <!-- ========== SLIDE 2: TABLE OF CONTENTS ========== -->
+        <div class="slide">
+            <h2 style="margin-bottom:4px">Table of Contents</h2>
+            <p class="subtitle small">Click any section to jump directly</p>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;align-content:center">
+
+                <a onclick="showSlide(2)"
+                    style="cursor:pointer;text-decoration:none;display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-radius:12px;border:1px solid var(--border);background:var(--surface);transition:.2s"
+                    onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.06)'"
+                    onmouseout="this.style.borderColor='var(--border)';this.style.transform='';this.style.boxShadow=''">
+                    <div
+                        style="min-width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#5b4cdb,#6c5ce7);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px">
+                        A</div>
+                    <div>
+                        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">Understanding the
+                            Sourcing Issues</p>
+                        <p class="xsmall" style="color:var(--text3);line-height:1.4">How staffing firms source today,
+                            pain points, and why this matters</p>
+                    </div>
+                </a>
+
+                <a onclick="showSlide(8)"
+                    style="cursor:pointer;text-decoration:none;display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-radius:12px;border:1px solid var(--border);background:var(--surface);transition:.2s"
+                    onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.06)'"
+                    onmouseout="this.style.borderColor='var(--border)';this.style.transform='';this.style.boxShadow=''">
+                    <div
+                        style="min-width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#e84393,#fd79a8);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px">
+                        B</div>
+                    <div>
+                        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">Competitor
+                            Research</p>
+                        <p class="xsmall" style="color:var(--text3);line-height:1.4">HireEZ, Gem, Manatal — strengths,
+                            gaps, and where Jia wins</p>
+                    </div>
+                </a>
+
+                <a onclick="showSlide(12)"
+                    style="cursor:pointer;text-decoration:none;display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-radius:12px;border:1px solid var(--border);background:var(--surface);transition:.2s"
+                    onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.06)'"
+                    onmouseout="this.style.borderColor='var(--border)';this.style.transform='';this.style.boxShadow=''">
+                    <div
+                        style="min-width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#00a884,#00cec9);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px">
+                        C</div>
+                    <div>
+                        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">Proposed FRD &
+                            Wireframes</p>
+                        <p class="xsmall" style="color:var(--text3);line-height:1.4">User stories, feature requirements,
+                            and interactive prototype walkthrough</p>
+                    </div>
+                </a>
+
+                <a onclick="showSlide(18)"
+                    style="cursor:pointer;text-decoration:none;display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-radius:12px;border:1px solid var(--border);background:var(--surface);transition:.2s"
+                    onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.06)'"
+                    onmouseout="this.style.borderColor='var(--border)';this.style.transform='';this.style.boxShadow=''">
+                    <div
+                        style="min-width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#e67e22,#fdcb6e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px">
+                        D</div>
+                    <div>
+                        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">Design & AI
+                            Mechanics</p>
+                        <p class="xsmall" style="color:var(--text3);line-height:1.4">AI matching engine, scoring
+                            methodology, and system design</p>
+                    </div>
+                </a>
+
+                <a onclick="showSlide(21)"
+                    style="cursor:pointer;text-decoration:none;display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-radius:12px;border:1px solid var(--border);background:var(--surface);transition:.2s"
+                    onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.06)'"
+                    onmouseout="this.style.borderColor='var(--border)';this.style.transform='';this.style.boxShadow=''">
+                    <div
+                        style="min-width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#d63031,#ff7675);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px">
+                        E</div>
+                    <div>
+                        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">Pricing &
+                            Go-to-Market</p>
+                        <p class="xsmall" style="color:var(--text3);line-height:1.4">Three-tier pricing model with
+                            talent exchange strategy</p>
+                    </div>
+                </a>
+
+                <a onclick="showSlide(24)"
+                    style="cursor:pointer;text-decoration:none;display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-radius:12px;border:1px solid var(--border);background:var(--surface);transition:.2s"
+                    onmouseover="this.style.borderColor='var(--accent)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,.06)'"
+                    onmouseout="this.style.borderColor='var(--border)';this.style.transform='';this.style.boxShadow=''">
+                    <div
+                        style="min-width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#636e72,#b2bec3);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px">
+                        📎</div>
+                    <div>
+                        <p style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">Appendix: Phased
+                            Rollout</p>
+                        <p class="xsmall" style="color:var(--text3);line-height:1.4">MVP → Phase 2 → Phase 3 timeline
+                            and feature breakdown</p>
+                    </div>
+                </a>
+
             </div>
-            <div class="progress-track" style="margin-bottom: 20px;">
-              <div class="progress-fill" style="width: 0%;"></div>
+
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Overview</span></div>
+        </div>
+
+        <!-- ========== SLIDE 3: SECTION A DIVIDER ========== -->
+        <div class="slide divider-slide">
+            <div class="section-tag a">Section A</div>
+            <h1>Understanding the Sourcing Issues</h1>
+            <p class="subtitle">How staffing firms source candidates today, which pain points we prioritize, and why</p>
+        </div>
+
+        <!-- ========== SLIDE 3: STAFFING FIRM REALITY ========== -->
+        <div class="slide">
+            <div class="section-tag a">Section A</div>
+            <h2>The Staffing Firm Reality</h2>
+            <p class="subtitle small">How staffing firms source candidates today — a high-pressure, speed-driven
+                workflow</p>
+            <div class="flow">
+                <div class="step">📋 Job Order</div><span class="arrow">→</span>
+                <div class="step">🔍 Job Boards</div><span class="arrow">→</span>
+                <div class="step">🗃️ Internal DB</div><span class="arrow">→</span>
+                <div class="step">💬 LinkedIn</div><span class="arrow">→</span>
+                <div class="step">📞 Cold Call</div><span class="arrow">→</span>
+                <div class="step">📄 Shortlist</div><span class="arrow">→</span>
+                <div class="step">📨 Submit</div>
             </div>
-            <div id="processing-log" style="font-size: 13px; color: var(--jia-text-muted); min-height: 160px;">
-              <!-- Populated by JS -->
+            <div class="grid2 mt16" style="flex:1">
+                <div>
+                    <h4 style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px">Tools They Commonly
+                        Use</h4>
+                    <ul style="font-size:13px;color:var(--text2);line-height:2;padding-left:18px">
+                        <li>Job boards (JobStreet, Indeed, LinkedIn Jobs)</li>
+                        <li>LinkedIn Recruiter (manual search + InMail)</li>
+                        <li>ATS/CRM (Bullhorn, Recruit CRM, or spreadsheets)</li>
+                        <li>Email / SMS / Viber for outreach</li>
+                        <li>Excel or Google Sheets for tracking</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px">The Reality (in
+                        numbers)</h4>
+                    <div class="grid2" style="gap:12px">
+                        <div class="card" style="text-align:center;padding:14px">
+                            <div style="font-size:28px;font-weight:800;color:var(--accent3)">70%</div>
+                            <div class="xsmall" style="color:var(--text3);margin-top:4px">of recruiter time on sourcing
+                                & outreach</div>
+                        </div>
+                        <div class="card" style="text-align:center;padding:14px">
+                            <div style="font-size:28px;font-weight:800;color:var(--orange)">3–5 days</div>
+                            <div class="xsmall" style="color:var(--text3);margin-top:4px">avg. time-to-shortlist (client
+                                wants 24-48h)</div>
+                        </div>
+                        <div class="card" style="text-align:center;padding:14px">
+                            <div style="font-size:28px;font-weight:800;color:var(--red)">10–15%</div>
+                            <div class="xsmall" style="color:var(--text3);margin-top:4px">cold outreach response rate
+                            </div>
+                        </div>
+                        <div class="card" style="text-align:center;padding:14px">
+                            <div style="font-size:28px;font-weight:800;color:var(--accent)">60%+</div>
+                            <div class="xsmall" style="color:var(--text3);margin-top:4px">of existing DB goes untapped
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <p class="progress-status" style="text-align: center; font-size: 13px; color: var(--jia-text-muted);">
-            Starting...
-          </p>
-        </div>
-      </div>
-
-      <!-- Step 3: Ready -->
-      <div id="step-ready" style="display: none;">
-        <div class="page-header" style="text-align: center; max-width: 600px; margin: 0 auto 40px;">
-          <div style="font-size: 48px; margin-bottom: 16px;">🎉</div>
-          <h1
-            style="font-size: 32px; margin-bottom: 12px; background: linear-gradient(90deg, rgb(159, 202, 237) 0%, rgb(206, 182, 218) 33%, rgb(235, 172, 201) 66%, rgb(252, 206, 192) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-            Your Database is Ready!
-          </h1>
-          <p class="subtitle" style="font-size: 15px;">AI has indexed your candidates. Here's what we found:</p>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section A: Understanding the
+                    Problem</span></div>
         </div>
 
-        <div class="stats-grid stagger" style="max-width: 700px; margin: 0 auto 32px;">
-          <div class="stat-card animate-fade-in-up">
-            <div class="stat-value" data-count="12450">0</div>
-            <div class="stat-label">Total Profiles</div>
-          </div>
-          <div class="stat-card animate-fade-in-up">
-            <div class="stat-value" data-count="47">0</div>
-            <div class="stat-label">Unique Titles</div>
-          </div>
-          <div class="stat-card animate-fade-in-up">
-            <div class="stat-value" data-count="156">0</div>
-            <div class="stat-label">Skills Found</div>
-          </div>
-          <div class="stat-card animate-fade-in-up">
-            <div class="stat-value" data-count="8100">0</div>
-            <div class="stat-label">Dormant (90+ days)</div>
-          </div>
-        </div>
-
-        <div style="max-width: 700px; margin: 0 auto 32px;">
-          <div class="insight-card">
-            <span class="insight-icon">💡</span>
-            <div>
-              <strong style="color: var(--jia-text-primary);">Quick insight:</strong> 65% of your candidates haven't
-              been contacted in 3+ months. Sourcing can help you re-engage them with personalized, AI-powered outreach.
+        <!-- ========== SLIDE 4: PAIN POINT PRIORITIZATION ========== -->
+        <div class="slide">
+            <div class="section-tag a">Section A</div>
+            <h2>Pain Point Prioritization</h2>
+            <p class="subtitle small">Which pains we solve first — and why — based on impact to <strong
+                    style="color:var(--text)">time-to-shortlist</strong></p>
+            <div style="flex:1;overflow:auto">
+                <table class="deck-table">
+                    <tr>
+                        <th>#</th>
+                        <th>Pain Point</th>
+                        <th>Priority</th>
+                        <th>Rationale</th>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>"We don't fully leverage our existing database."</td>
+                        <td class="priority p0">🔴 P0</td>
+                        <td>Fastest ROI — they already have the data. AI rediscovery unlocks immediate value.</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>"We don't know who to prioritize."</td>
+                        <td class="priority p0">🔴 P0</td>
+                        <td>AI ranking/scoring directly reduces time-to-shortlist.</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>"Manual outreach doesn't scale."</td>
+                        <td class="priority p1">🟡 P1</td>
+                        <td>Automated, personalized outreach multiplies recruiter capacity.</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>"Follow-ups fall through the cracks."</td>
+                        <td class="priority p1">🟡 P1</td>
+                        <td>Auto follow-up sequences close the loop on outreach.</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>"We're fishing in the same ponds."</td>
+                        <td class="priority p2">🟢 P2</td>
+                        <td>Deferred to v2 — external sourcing is complex, costly, and competitors already do it.</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>"Clients want shortlists fast."</td>
+                        <td class="priority" style="color:var(--accent2)">✅ Outcome</td>
+                        <td>This is the <em>result</em> of solving the above — our North Star metric.</td>
+                    </tr>
+                </table>
             </div>
-          </div>
+            <div class="card mt12" style="padding:14px">
+                <p class="small" style="color:var(--text2)"><strong style="color:var(--orange)">Why "Fishing in the same
+                        ponds" is P2:</strong> External sourcing requires API integrations with LinkedIn, JobStreet,
+                    etc. (3-6 months of engineering). The data already exists internally — unlocking it delivers
+                    immediate ROI with zero external dependencies. Jia wins with its <strong>closed-loop</strong> from
+                    sourcing through AI interview, which only works with internal data first.</p>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section A: Understanding the
+                    Problem</span></div>
         </div>
 
-        <div style="display: flex; justify-content: center; gap: 12px;">
-          <a href="search.html" class="btn-primary" style="font-size: 16px; padding: 14px 32px;">
-            🚀 Start Sourcing
-          </a>
-          <button class="btn-secondary" onclick="showToast('Database settings opened')">
-            ⚙️ Review Database Settings
-          </button>
+        <!-- ========== SLIDE 5: KPIs & ASSUMPTIONS ========== -->
+        <div class="slide">
+            <div class="section-tag a">Section A</div>
+            <h2>KPIs & Key Assumptions</h2>
+            <p class="subtitle small">What we're measuring and what we're assuming about staffing firm workflows</p>
+            <div class="grid2" style="flex:1">
+                <div>
+                    <h4 style="font-size:14px;font-weight:600;color:var(--accent2);margin-bottom:12px">📊 Target KPIs
+                    </h4>
+                    <table class="deck-table">
+                        <tr>
+                            <th>KPI</th>
+                            <th>Current</th>
+                            <th>Target</th>
+                        </tr>
+                        <tr>
+                            <td>Time-to-shortlist</td>
+                            <td class="small">3-5 days</td>
+                            <td style="color:var(--green);font-weight:600">
+                                < 24 hours</td>
+                        </tr>
+                        <tr>
+                            <td>Candidates sourced/day</td>
+                            <td class="small">15-25</td>
+                            <td style="color:var(--green);font-weight:600">50-100+</td>
+                        </tr>
+                        <tr>
+                            <td>Outreach response rate</td>
+                            <td class="small">10-15%</td>
+                            <td style="color:var(--green);font-weight:600">25-35%</td>
+                        </tr>
+                        <tr>
+                            <td>DB reactivation rate</td>
+                            <td class="small">
+                                < 5%</td>
+                            <td style="color:var(--green);font-weight:600">20-30%</td>
+                        </tr>
+                        <tr>
+                            <td>Fill rate</td>
+                            <td class="small">15-25%</td>
+                            <td style="color:var(--green);font-weight:600">30%+</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h4 style="font-size:14px;font-weight:600;color:var(--accent2);margin-bottom:12px">💡 Key
+                        Assumptions</h4>
+                    <div class="card" style="margin-bottom:10px">
+                        <p class="small">Staffing firms have an existing candidate database — even if unstructured (CSV,
+                            ATS exports, or spreadsheets)</p>
+                    </div>
+                    <div class="card" style="margin-bottom:10px">
+                        <p class="small">Recruiters manage <strong>5-15 active job orders</strong> simultaneously</p>
+                    </div>
+                    <div class="card" style="margin-bottom:10px">
+                        <p class="small">Clients evaluate firms primarily on <strong>speed and quality</strong> of
+                            shortlists</p>
+                    </div>
+                    <div class="card" style="margin-bottom:10px">
+                        <p class="small">Most candidates in their DB have <strong>not been contacted in 3+
+                                months</strong></p>
+                    </div>
+                    <div class="card">
+                        <p class="small">PH market relies heavily on <strong>Viber/SMS</strong> alongside email</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section A: Understanding the
+                    Problem</span></div>
         </div>
-      </div>
-    </main>
-  </div>
 
-  <script src="app.js"></script>
-  <script>
-    function startProcessing() {
-      document.getElementById('step-upload').style.display = 'none';
-      document.getElementById('step-processing').style.display = 'block';
+        <!-- ========== SLIDE 6: JIA TODAY ========== -->
+        <div class="slide">
+            <div class="section-tag a">Section A</div>
+            <h2>What Jia Offers Today — The Foundation</h2>
+            <p class="subtitle small">Jia's current modules and how Sourcing completes the pipeline</p>
+            <div class="grid3 mt12">
+                <div class="card accent">
+                    <h4>🔍 Smart CV Screener</h4>
+                    <p>Benchmarks CVs against job descriptions, gives fit scores, ranks candidates from Bad Fit → Strong
+                        Fit</p>
+                    <p class="mt8" style="color:var(--green);font-size:12px;font-weight:600">↓ 40% faster
+                        time-to-shortlist</p>
+                </div>
+                <div class="card accent">
+                    <h4>🎤 AI Interview</h4>
+                    <p>Dynamic, bias-free AI interviews that probe deeper, challenge vague answers, deliver scored
+                        transcripts</p>
+                    <p class="mt8" style="color:var(--green);font-size:12px;font-weight:600">Standardized scoring</p>
+                </div>
+                <div class="card accent">
+                    <h4>📋 Modern ATS</h4>
+                    <p>Organizes pipelines, automates notifications, tracks candidates seamlessly</p>
+                    <p class="mt8" style="color:var(--green);font-size:12px;font-weight:600">5-10 hours
+                        saved/recruiter/week</p>
+                </div>
+            </div>
+            <div class="card mt16"
+                style="padding:16px;background:rgba(108,92,231,.06);border-color:rgba(108,92,231,.2)">
+                <div class="flow" style="justify-content:center">
+                    <div class="step" style="border-color:var(--red);color:var(--red)">❓ Sourcing happens elsewhere
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="step" style="border-color:var(--accent);color:var(--accent2)">CV Screener</div>
+                    <span class="arrow">→</span>
+                    <div class="step" style="border-color:var(--accent);color:var(--accent2)">AI Interview</div>
+                    <span class="arrow">→</span>
+                    <div class="step" style="border-color:var(--accent);color:var(--accent2)">ATS</div>
+                    <span class="arrow">→</span>
+                    <div class="step" style="border-color:var(--green);color:var(--green)">Hire</div>
+                </div>
+                <div class="flow mt8" style="justify-content:center">
+                    <div class="step" style="border-color:var(--green);color:var(--green);font-weight:700">✨ Sourcing
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="step">CV Screener</div>
+                    <span class="arrow">→</span>
+                    <div class="step">AI Interview</div>
+                    <span class="arrow">→</span>
+                    <div class="step">ATS</div>
+                    <span class="arrow">→</span>
+                    <div class="step" style="border-color:var(--green);color:var(--green)">Hire</div>
+                </div>
+                <p class="xsmall mt8" style="text-align:center;color:var(--text3)">↑ Full AI-powered pipeline, all in
+                    one platform — Sourcing adds the missing top-of-funnel step</p>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section A: Understanding the
+                    Problem</span></div>
+        </div>
 
-      const log = document.getElementById('processing-log');
-      const steps = [
-        { text: '✅ Reading file... 12,450 records detected', progress: 10, delay: 600 },
-        { text: '✅ 9,750 profiles parsed successfully', progress: 30, delay: 1200 },
-        { text: '✅ 8,200 skills extracted', progress: 50, delay: 1800 },
-        { text: '✅ 6,100 job titles normalized', progress: 65, delay: 2400 },
-        { text: '🔄 Generating embeddings for semantic search...', progress: 80, delay: 3000 },
-        { text: '✅ Embeddings generated', progress: 90, delay: 3800 },
-        { text: '✅ Response likelihood scores calculated', progress: 100, delay: 4400 },
-      ];
+        <!-- ========== SLIDE 7: SECTION B DIVIDER ========== -->
+        <div class="slide divider-slide">
+            <div class="section-tag b">Section B</div>
+            <h1>Competitor Research</h1>
+            <p class="subtitle">AI-first sourcing products — what they do well, where they fall short, and where Jia can
+                win</p>
+        </div>
 
-      steps.forEach((step, i) => {
-        setTimeout(() => {
-          const line = document.createElement('div');
-          line.style.cssText = 'padding: 6px 0; animation: fadeIn 0.3s ease;';
-          line.textContent = step.text;
-          if (step.text.startsWith('🔄')) {
-            line.classList.add('animate-pulse');
-          }
-          log.appendChild(line);
+        <!-- ========== SLIDE 8: HIREEZ ========== -->
+        <div class="slide">
+            <div class="section-tag b">Section B</div>
+            <h2>Competitor 1 — HireEZ</h2>
+            <p class="subtitle small">AI-powered outbound recruitment platform · 850M+ profiles · Enterprise-focused</p>
+            <div class="grid2" style="flex:1;overflow:hidden">
+                <div style="display:flex;flex-direction:column;gap:10px;overflow:auto">
+                    <div class="card" style="flex-shrink:0">
+                        <h4>Key Sourcing Features</h4>
+                        <ul class="small" style="padding-left:16px;line-height:1.7">
+                            <li><strong>EZ Sourcing:</strong> AI searches 800M+ profiles using Boolean + AI matching
+                            </li>
+                            <li><strong>EZ Rediscovery:</strong> Scans existing ATS data for hidden talent; enriches
+                                profiles</li>
+                            <li><strong>EZ Engagement:</strong> Drip campaigns across email, LinkedIn, text with GPT
+                                messages</li>
+                            <li><strong>AI Matching:</strong> ML algorithms that learn from recruiter feedback</li>
+                        </ul>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0">
+                        <div class="card green" style="padding:10px">
+                            <p class="xsmall"><strong>✅ Strengths:</strong> Massive DB, ATS rediscovery, multi-channel
+                                outreach</p>
+                        </div>
+                        <div class="card pink" style="padding:10px">
+                            <p class="xsmall"><strong>❌ Gaps:</strong> Enterprise pricing, no AI interviews, no local
+                                channels (Viber)</p>
+                        </div>
+                    </div>
+                    <div class="card accent" style="padding:10px;flex-shrink:0">
+                        <p class="xsmall"><strong>💡 Jia’s Opportunity:</strong> Combine sourcing + screening in one AI
+                            workflow — source a candidate AND send them to AI interview in one click.</p>
+                    </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;min-height:0">
+                    <div class="screenshot-wrap" style="flex:1"><img src="img/hireez-1.png" class="screenshot"></div>
+                    <div class="screenshot-wrap" style="flex:1"><img src="img/hireez-2.png" class="screenshot"></div>
+                </div>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section B: Competitor Research</span>
+            </div>
+        </div>
 
-          // Update progress bar
-          const bar = document.querySelector('.progress-fill');
-          const pct = document.querySelector('.progress-percent');
-          const status = document.querySelector('.progress-status');
-          if (bar) bar.style.width = step.progress + '%';
-          if (pct) pct.textContent = step.progress + '%';
-          if (status) status.textContent = step.text.replace(/^[✅🔄⏳]\s*/, '');
+        <!-- ========== SLIDE 9: GEM ========== -->
+        <div class="slide">
+            <div class="section-tag b">Section B</div>
+            <h2>Competitor 2 — Gem</h2>
+            <p class="subtitle small">All-in-one recruiting platform · Sourcing Agent + CRM + ATS · Enterprise-focused
+            </p>
+            <div class="grid2" style="flex:1">
+                <div style="display:flex;flex-direction:column;gap:12px">
+                    <div class="card" style="flex:1">
+                        <h4>Key Sourcing Features</h4>
+                        <ul class="small" style="padding-left:16px;line-height:1.8">
+                            <li><strong>Sourcing Agent:</strong> 800M+ talent profiles, conversational search,
+                                personalized outreach</li>
+                            <li><strong>CRM:</strong> AI rediscovery agents, enriched profiles, data refresh</li>
+                            <li><strong>ATS:</strong> Application review agents, AI scorecard summaries, offer
+                                management</li>
+                            <li><strong>Talent 360 Data:</strong> Unified data layer powering all product modules</li>
+                        </ul>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                        <div class="card green" style="padding:12px">
+                            <p class="xsmall"><strong>✅ Strengths:</strong> True all-in-one platform, strong data
+                                unification, AI-native across all modules</p>
+                        </div>
+                        <div class="card pink" style="padding:12px">
+                            <p class="xsmall"><strong>❌ Gaps:</strong> Enterprise pricing, no AI interviews/screening,
+                                not PH-market optimized</p>
+                        </div>
+                    </div>
+                    <div class="card accent" style="padding:12px">
+                        <p class="xsmall"><strong>💡 Jia's Opportunity:</strong> Gem has no AI interview capability.
+                            Jia's closed-loop (source → screen → interview → shortlist) is unique. Plus Jia can win in
+                            the PH staffing niche where Gem doesn't compete.</p>
+                    </div>
+                </div>
+                <div class="screenshot-wrap"><img src="img/gem.png" class="screenshot"></div>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section B: Competitor Research</span>
+            </div>
+        </div>
 
-          // Fix the spinning line once embeddings complete
-          if (i === 5) {
-            const spinningLine = log.querySelector('.animate-pulse');
-            if (spinningLine) {
-              spinningLine.classList.remove('animate-pulse');
-              spinningLine.textContent = '✅ Embeddings generated for semantic search';
-            }
-          }
+        <!-- ========== SLIDE 10: MANATAL ========== -->
+        <div class="slide">
+            <div class="section-tag b">Section B</div>
+            <h2>Competitor 3 — Manatal</h2>
+            <p class="subtitle small">Cloud ATS + AI sourcing · SEA-built (Thailand) · Affordable for mid-market</p>
+            <div class="grid2" style="flex:1">
+                <div style="display:flex;flex-direction:column;gap:12px">
+                    <div class="card" style="flex:1">
+                        <h4>Key Sourcing Features</h4>
+                        <ul class="small" style="padding-left:16px;line-height:1.8">
+                            <li><strong>AI Advanced Search:</strong> Semantic search across internal database, scores
+                                and ranks matches</li>
+                            <li><strong>Social Enrichment:</strong> Pulls data from LinkedIn, GitHub, and other social
+                                profiles</li>
+                            <li><strong>Job Board Integration:</strong> Posts to multiple boards, aggregates applicants
+                            </li>
+                            <li><strong>Customizable Pipelines:</strong> Drag-and-drop candidate management</li>
+                        </ul>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                        <div class="card green" style="padding:12px">
+                            <p class="xsmall"><strong>✅ Strengths:</strong> Affordable ($15-55/user/mo), clean UX,
+                                strong ATS, SEA-relevant</p>
+                        </div>
+                        <div class="card pink" style="padding:12px">
+                            <p class="xsmall"><strong>❌ Gaps:</strong> No AI interviews, basic search (not NLP), no
+                                outreach automation, no network pool</p>
+                        </div>
+                    </div>
+                    <div class="card accent" style="padding:12px">
+                        <p class="xsmall"><strong>💡 Jia's Opportunity:</strong> Manatal is the closest PH-market
+                            competitor but lacks AI interviews entirely. Jia offers deeper intelligence (interview data,
+                            response prediction) at a competitive price point.</p>
+                    </div>
+                </div>
+                <div class="screenshot-wrap"><img src="img/manatal.png" class="screenshot"></div>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section B: Competitor Research</span>
+            </div>
+        </div>
 
-          // Show ready step
-          if (i === steps.length - 1) {
-            setTimeout(() => {
-              document.getElementById('step-processing').style.display = 'none';
-              document.getElementById('step-ready').style.display = 'block';
+        <!-- ========== SLIDE 11: COMPETITIVE LANDSCAPE ========== -->
+        <div class="slide">
+            <div class="section-tag b">Section B</div>
+            <h2>Competitive Landscape Summary</h2>
+            <p class="subtitle small">Where Jia can win — no competitor offers sourcing + AI screening in one platform
+            </p>
+            <div style="flex:1;overflow:auto">
+                <table class="deck-table" style="margin-top:8px">
+                    <tr>
+                        <th></th>
+                        <th>External Sourcing</th>
+                        <th>Internal DB Rediscovery</th>
+                        <th>Outreach Automation</th>
+                        <th>AI Screening / Interview</th>
+                        <th>PH Market Fit</th>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700">HireEZ</td>
+                        <td class="check">✅ Strong</td>
+                        <td class="check">✅ Strong</td>
+                        <td class="check">✅ Strong</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ Enterprise pricing</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700">Gem</td>
+                        <td class="check">✅ Strong</td>
+                        <td class="check">✅ Strong</td>
+                        <td class="check">✅ Strong</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ Enterprise pricing</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700">Manatal</td>
+                        <td class="partial">⚠️ Basic</td>
+                        <td class="partial">⚠️ Basic</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ None</td>
+                        <td class="check">✅ Affordable</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700">Kalibrr</td>
+                        <td class="check">✅ Job board</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ None</td>
+                        <td class="cross">❌ None</td>
+                        <td class="check">✅ PH-built</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:700">LinkedIn Recruiter</td>
+                        <td class="check">✅ 800M+</td>
+                        <td class="cross">❌ None</td>
+                        <td class="partial">⚠️ InMail</td>
+                        <td class="cross">❌ None</td>
+                        <td class="partial">⚠️ Expensive</td>
+                    </tr>
+                    <tr style="background:rgba(108,92,231,.08)">
+                        <td style="font-weight:700;color:var(--accent2)">Jia + Sourcing</td>
+                        <td class="partial">⚠️ v2</td>
+                        <td style="color:var(--green);font-weight:700">✅ Core Focus</td>
+                        <td style="color:var(--green);font-weight:700">✅ Multichannel</td>
+                        <td style="color:var(--green);font-weight:700">✅ Integrated</td>
+                        <td style="color:var(--green);font-weight:700">✅ PH-first</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="quote mt16"
+                style="text-align:center;font-size:18px;font-weight:600;border-left-color:var(--accent3)">
+                "LinkedIn sells quantity. Jia sells quality with proof."
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section B: Competitor Research</span>
+            </div>
+        </div>
 
-              // Trigger counter animations
-              document.querySelectorAll('.stat-value[data-count]').forEach(el => {
-                const target = parseInt(el.dataset.count);
-                animateCounter(el, target);
-              });
-            }, 800);
-          }
-        }, step.delay);
-      });
-    }
-  </script>
+        <!-- ========== SLIDE 12: SECTION C DIVIDER ========== -->
+        <div class="slide divider-slide">
+            <div class="section-tag c">Section C</div>
+            <h1>Proposed FRD</h1>
+            <p class="subtitle">Jia Sourcing — Feature Requirements Document expressed as user stories, wireframes, and
+                flows</p>
+        </div>
+
+        <!-- ========== SLIDE 13: FEATURE OVERVIEW ========== -->
+        <div class="slide">
+            <div class="section-tag c">Section C · Feature Overview</div>
+            <h2>Feature: Sourcing</h2>
+            <p class="subtitle small">A new AI-powered module within the Jia platform</p>
+            <div class="quote" style="font-style:normal;font-size:16px">
+                Jia's Sourcing module is an AI-first copilot that helps staffing firm recruiters <strong
+                    class="hl">rediscover high-fit candidates</strong> from their existing database, <strong
+                    class="hl">rank them</strong> by relevance and likelihood to respond, and <strong class="hl">engage
+                    them</strong> through automated, personalized outreach — seamlessly connected to Jia's AI interview
+                pipeline.
+            </div>
+            <div class="grid2 mt16" style="flex:1">
+                <div>
+                    <h4 style="font-size:14px;font-weight:600;color:var(--accent2);margin-bottom:12px">Pain Points
+                        Addressed</h4>
+                    <div class="card" style="margin-bottom:8px;padding:12px">
+                        <p class="small">✅ <strong>#6</strong> "We don't leverage our DB" → AI-powered rediscovery &
+                            enrichment</p>
+                    </div>
+                    <div class="card" style="margin-bottom:8px;padding:12px">
+                        <p class="small">✅ <strong>#3</strong> "We don't know who to prioritize" → AI ranking by fit +
+                            response likelihood</p>
+                    </div>
+                    <div class="card" style="margin-bottom:8px;padding:12px">
+                        <p class="small">✅ <strong>#2</strong> "Manual outreach doesn't scale" → Automated personalized
+                            multi-channel outreach</p>
+                    </div>
+                    <div class="card" style="margin-bottom:8px;padding:12px">
+                        <p class="small">✅ <strong>#4</strong> "Follow-ups fall through the cracks" → Intelligent
+                            follow-up sequences</p>
+                    </div>
+                    <div class="card" style="padding:12px">
+                        <p class="small">✅ <strong>#5</strong> "Clients want shortlists fast" → The <em>outcome</em> of
+                            all the above</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="font-size:14px;font-weight:600;color:var(--accent2);margin-bottom:12px">Objectives &
+                        Success Metrics</h4>
+                    <table class="deck-table">
+                        <tr>
+                            <th>Metric</th>
+                            <th>Target (90 days)</th>
+                        </tr>
+                        <tr>
+                            <td>Sourced candidates/recruiter/day</td>
+                            <td style="color:var(--green);font-weight:600">50+ (from ~20)</td>
+                        </tr>
+                        <tr>
+                            <td>Time-to-shortlist</td>
+                            <td style="color:var(--green);font-weight:600">
+                                < 24h (from 3-5 days)</td>
+                        </tr>
+                        <tr>
+                            <td>Outreach response rate</td>
+                            <td style="color:var(--green);font-weight:600">25%+ (from 10-15%)</td>
+                        </tr>
+                        <tr>
+                            <td>Feature adoption rate</td>
+                            <td style="color:var(--green);font-weight:600">60%+ weekly active</td>
+                        </tr>
+                    </table>
+                    <div class="card accent mt12" style="padding:12px">
+                        <p class="xsmall"><strong>Important:</strong> Jia does NOT currently have sourcing features.
+                            This is a net-new module that extends Jia's interview infrastructure into the top-of-funnel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section C: Proposed FRD</span></div>
+        </div>
+
+        <!-- ========== SLIDE 14: USER STORIES ========== -->
+        <div class="slide">
+            <div class="section-tag c">Section C · User Stories</div>
+            <h2>User Stories — Setup & Daily Workflow</h2>
+            <p class="subtitle small">Core v1 stories grouped by workflow phase · Format: As a [user], I want [goal] so
+                that [value]</p>
+            <div style="flex:1;overflow:auto">
+                <table class="deck-table">
+                    <tr>
+                        <th style="width:60px">ID</th>
+                        <th>User Story</th>
+                        <th style="width:60px">Priority</th>
+                    </tr>
+                    <tr>
+                        <td>US-1</td>
+                        <td><strong>As a recruiter</strong>, I want to upload my candidate database (CSV, Excel)
+                            <strong>so that</strong> Jia can index and enrich profiles for sourcing.
+                        </td>
+                        <td class="priority p0">P0</td>
+                    </tr>
+                    <tr>
+                        <td>US-2</td>
+                        <td><strong>As a recruiter</strong>, I want Jia to auto-parse and tag profiles with skills,
+                            titles, experience <strong>so that</strong> I don't manually categorize them.</td>
+                        <td class="priority p0">P0</td>
+                    </tr>
+                    <tr>
+                        <td>US-5</td>
+                        <td><strong>As a recruiter</strong>, I want to paste a job description and have Jia instantly
+                            surface top-ranked candidates <strong>so that</strong> I build a shortlist in minutes.</td>
+                        <td class="priority p0">P0</td>
+                    </tr>
+                    <tr>
+                        <td>US-6</td>
+                        <td><strong>As a recruiter</strong>, I want to search in natural language (e.g., "Java devs in
+                            Makati with BPO exp") <strong>so that</strong> I don't need Boolean syntax.</td>
+                        <td class="priority p0">P0</td>
+                    </tr>
+                    <tr>
+                        <td>US-7</td>
+                        <td><strong>As a recruiter</strong>, I want AI fit scores with explanations for each candidate
+                            <strong>so that</strong> I can quickly evaluate why someone was surfaced.
+                        </td>
+                        <td class="priority p0">P0</td>
+                    </tr>
+                    <tr>
+                        <td>US-10</td>
+                        <td><strong>As a recruiter</strong>, I want to launch an AI-generated outreach campaign via
+                            email/SMS <strong>so that</strong> I reach many candidates with personalized messages.</td>
+                        <td class="priority p0">P0</td>
+                    </tr>
+                    <tr>
+                        <td>US-14</td>
+                        <td><strong>As a recruiter</strong>, I want to review and edit AI messages before sending
+                            <strong>so that</strong> I maintain control over quality.
+                        </td>
+                        <td class="priority p0">P0</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section C: Proposed FRD</span></div>
+        </div>
+
+        <!-- ========== SLIDE 15: USER STORIES 2 ========== -->
+        <div class="slide">
+            <div class="section-tag c">Section C · User Stories</div>
+            <h2>User Stories — Follow-up, Analytics & Community</h2>
+            <p class="subtitle small">P1-P2 stories for outreach nurturing, analytics, and the Community data network
+            </p>
+            <div style="flex:1;overflow:auto">
+                <table class="deck-table">
+                    <tr>
+                        <th style="width:60px">ID</th>
+                        <th>User Story</th>
+                        <th style="width:60px">Priority</th>
+                    </tr>
+                    <tr>
+                        <td>US-12</td>
+                        <td><strong>As a recruiter</strong>, I want automated follow-up sequences (Day 3, Day 7)
+                            <strong>so that</strong> no candidate falls through the cracks.
+                        </td>
+                        <td class="priority p1">P1</td>
+                    </tr>
+                    <tr>
+                        <td>US-13</td>
+                        <td><strong>As a recruiter</strong>, I want positive responders auto-invited to AI interview
+                            <strong>so that</strong> sourcing flows seamlessly into screening.
+                        </td>
+                        <td class="priority p1">P1</td>
+                    </tr>
+                    <tr>
+                        <td>US-9</td>
+                        <td><strong>As a recruiter</strong>, I want Jia to flag "likely to respond" candidates
+                            <strong>so that</strong> I focus outreach on the most promising leads.
+                        </td>
+                        <td class="priority p1">P1</td>
+                    </tr>
+                    <tr>
+                        <td>US-7b</td>
+                        <td><strong>As a recruiter</strong>, I want a "Network Match" badge on Community pool candidates
+                            <strong>so that</strong> I distinguish between private and shared leads.
+                        </td>
+                        <td class="priority p0">P0</td>
+                    </tr>
+                    <tr>
+                        <td>US-15</td>
+                        <td><strong>As a recruiter</strong>, I want a campaign dashboard (reached, opened, replied,
+                            screened) <strong>so that</strong> I track sourcing effectiveness.</td>
+                        <td class="priority p1">P1</td>
+                    </tr>
+                    <tr>
+                        <td>US-17b</td>
+                        <td><strong>As a manager</strong>, I want to see data contribution and resulting discounts
+                            <strong>so that</strong> I justify ROI of the Community tier.
+                        </td>
+                        <td class="priority p1">P1</td>
+                    </tr>
+                    <tr>
+                        <td>US-18</td>
+                        <td><strong>As a recruiter</strong>, I want Jia to learn from my past selections <strong>so
+                                that</strong> recommendations improve over time.</td>
+                        <td class="priority p2">P2</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section C: Proposed FRD</span></div>
+        </div>
+
+        <!-- ========== SLIDE 16: WIREFRAMES — RECRUITER JOURNEY ========== -->
+        <div class="slide">
+            <div class="section-tag c">Section C · Wireframes</div>
+            <h2>Wireframes — Recruiter Journey Flow</h2>
+            <p class="subtitle small">Click any step to open the interactive prototype in a new tab</p>
+
+            <!-- Row 1: Steps 1-5 -->
+            <div style="display:flex;align-items:flex-start;justify-content:center;gap:0;padding:4px 0">
+
+                <!-- Step 1: Upload DB -->
+                <a href="setup.html" target="_blank"
+                    style="text-decoration:none;display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        1. Upload DB</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--accent);box-shadow:0 2px 6px rgba(91,76,219,.12)">
+                        <img src="prototype/setup-1.jpeg"
+                            style="width:100%;height:100%;object-fit:cover;object-position:top">
+                    </div>
+                    <p style="font-size:9px;color:var(--text3);margin-top:3px;text-align:center;line-height:1.3">60% of
+                        DB goes untapped — AI indexes it all</p>
+                </a>
+
+                <div
+                    style="display:flex;align-items:center;padding-top:18px;color:var(--accent);font-size:16px;font-weight:700;margin:0 1px">
+                    →</div>
+
+                <!-- Step 2: View DB -->
+                <a href="database.html" target="_blank"
+                    style="text-decoration:none;display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        2. View Database</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--accent);box-shadow:0 2px 6px rgba(91,76,219,.12)">
+                        <img src="prototype/database.jpeg"
+                            style="width:100%;height:100%;object-fit:cover;object-position:top">
+                    </div>
+                    <p style="font-size:9px;color:var(--text3);margin-top:3px;text-align:center;line-height:1.3">Browse
+                        enriched profiles with skills & tags</p>
+                </a>
+
+                <div
+                    style="display:flex;align-items:center;padding-top:18px;color:var(--accent);font-size:16px;font-weight:700;margin:0 1px">
+                    →</div>
+
+                <!-- Step 3: Job Order -->
+                <a href="joborder.html" target="_blank"
+                    style="text-decoration:none;display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        3. Create Job Order</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--accent);box-shadow:0 2px 6px rgba(91,76,219,.12)">
+                        <img src="prototype/job-order-ai.jpeg"
+                            style="width:100%;height:100%;object-fit:cover;object-position:top">
+                    </div>
+                    <p style="font-size:9px;color:var(--text3);margin-top:3px;text-align:center;line-height:1.3">AI or
+                        manual — paste JD, AI fills the rest</p>
+                </a>
+
+                <div
+                    style="display:flex;align-items:center;padding-top:18px;color:var(--accent);font-size:16px;font-weight:700;margin:0 1px">
+                    →</div>
+
+                <!-- Step 4: Search -->
+                <a href="search.html" target="_blank"
+                    style="text-decoration:none;display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        4. AI Search</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--accent);box-shadow:0 2px 6px rgba(91,76,219,.12)">
+                        <img src="prototype/search.jpeg"
+                            style="width:100%;height:100%;object-fit:cover;object-position:top">
+                    </div>
+                    <p style="font-size:9px;color:var(--text3);margin-top:3px;text-align:center;line-height:1.3">Natural
+                        language — no Boolean needed</p>
+                </a>
+
+                <div
+                    style="display:flex;align-items:center;padding-top:18px;color:var(--accent);font-size:16px;font-weight:700;margin:0 1px">
+                    →</div>
+
+                <!-- Step 5: Results -->
+                <a href="results.html" target="_blank"
+                    style="text-decoration:none;display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        5. Ranked Results</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--accent);box-shadow:0 2px 6px rgba(91,76,219,.12)">
+                        <img src="prototype/results.jpeg"
+                            style="width:100%;height:100%;object-fit:cover;object-position:top">
+                    </div>
+                    <p style="font-size:9px;color:var(--text3);margin-top:3px;text-align:center;line-height:1.3">
+                        AI-scored with fit % & response prediction</p>
+                </a>
+            </div>
+
+            <!-- Connector between rows -->
+            <div style="display:flex;justify-content:flex-end;padding-right:60px">
+                <div style="color:var(--accent);font-size:16px;font-weight:700">↩</div>
+            </div>
+
+            <!-- Row 2: Steps 6-9 -->
+            <div style="display:flex;align-items:flex-start;justify-content:center;gap:0;padding:0 0 4px">
+
+                <!-- Step 6: Profile -->
+                <a href="candidate.html" target="_blank"
+                    style="text-decoration:none;display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        6. Candidate Profile</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--accent);box-shadow:0 2px 6px rgba(91,76,219,.12)">
+                        <img src="prototype/results-profile.jpeg"
+                            style="width:100%;height:100%;object-fit:cover;object-position:top">
+                    </div>
+                    <p style="font-size:9px;color:var(--text3);margin-top:3px;text-align:center;line-height:1.3">Full
+                        history — past interviews, Jia scores</p>
+                </a>
+
+                <div
+                    style="display:flex;align-items:center;padding-top:18px;color:var(--accent);font-size:16px;font-weight:700;margin:0 1px">
+                    →</div>
+
+                <!-- Step 7: Outreach -->
+                <a href="outreach.html" target="_blank"
+                    style="text-decoration:none;display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        7. Send Outreach</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--accent);box-shadow:0 2px 6px rgba(91,76,219,.12)">
+                        <img src="prototype/outreach.jpeg"
+                            style="width:100%;height:100%;object-fit:cover;object-position:top">
+                    </div>
+                    <p style="font-size:9px;color:var(--text3);margin-top:3px;text-align:center;line-height:1.3">
+                        AI-personalized multi-channel campaigns</p>
+                </a>
+
+                <div
+                    style="display:flex;align-items:center;padding-top:18px;color:var(--accent);font-size:16px;font-weight:700;margin:0 1px">
+                    →</div>
+
+                <!-- Step 8: Templates -->
+                <a href="outreach.html" target="_blank"
+                    style="text-decoration:none;display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        8. Outreach Templates</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--accent);box-shadow:0 2px 6px rgba(91,76,219,.12)">
+                        <img src="prototype/outreach-template.jpeg"
+                            style="width:100%;height:100%;object-fit:cover;object-position:top">
+                    </div>
+                    <p style="font-size:9px;color:var(--text3);margin-top:3px;text-align:center;line-height:1.3">
+                        Reusable AI templates, edit before send</p>
+                </a>
+
+                <div
+                    style="display:flex;align-items:center;padding-top:18px;color:var(--accent);font-size:16px;font-weight:700;margin:0 1px">
+                    →</div>
+
+                <!-- Step 9: AI Interview -->
+                <div style="display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--green);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        9. AI Interview ✨</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--green);background:var(--card);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,168,132,.12)">
+                        <span style="font-size:28px">🎤</span>
+                    </div>
+                    <p
+                        style="font-size:9px;color:var(--green);margin-top:3px;text-align:center;line-height:1.3;font-weight:500">
+                        Jia's existing module — bias-free scoring</p>
+                </div>
+
+                <!-- Analytics (final) -->
+                <div
+                    style="display:flex;align-items:center;padding-top:18px;color:var(--text3);font-size:14px;margin:0 4px">
+                    ·</div>
+                <a href="analytics.html" target="_blank"
+                    style="text-decoration:none;display:flex;flex-direction:column;align-items:center;flex:1;max-width:140px">
+                    <div
+                        style="font-size:9px;font-weight:700;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">
+                        📊 Analytics</div>
+                    <div
+                        style="width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:6px;border:2px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.06)">
+                        <img src="prototype/analytics.jpeg"
+                            style="width:100%;height:100%;object-fit:cover;object-position:top">
+                    </div>
+                    <p style="font-size:9px;color:var(--text3);margin-top:3px;text-align:center;line-height:1.3">Track
+                        campaigns, measure sourcing ROI</p>
+                </a>
+            </div>
+
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section C: Wireframes · Click any step
+                    to explore the prototype</span></div>
+        </div>
+
+        <!-- ========== SLIDE 17: SECTION D DIVIDER ========== -->
+        <div class="slide divider-slide">
+            <div class="section-tag d">Section D</div>
+            <h1>Design & AI Mechanics</h1>
+            <p class="subtitle">How the feature works at a conceptual level — data, AI models, and human-in-the-loop
+                design</p>
+        </div>
+
+        <!-- ========== SLIDE 18: AI ARCHITECTURE ========== -->
+        <div class="slide">
+            <div class="section-tag d">Section D · AI Architecture</div>
+            <h2>AI Usage Across the Flow</h2>
+            <p class="subtitle small">Every step of the sourcing workflow is AI-native — not "AI-flavored"</p>
+            <div style="flex:1;overflow:auto">
+                <table class="deck-table">
+                    <tr>
+                        <th>Step</th>
+                        <th>AI Technique</th>
+                        <th>What It Does</th>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Database Ingestion</td>
+                        <td class="small">NLP / NER</td>
+                        <td class="small">Parses resumes to extract skills, titles, companies, education. <em>Reuses
+                                Jia's existing parsing AI.</em></td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Semantic Search</td>
+                        <td class="small">Embeddings + Vector DB</td>
+                        <td class="small">Converts JDs and profiles into vectors; finds semantically similar matches
+                            beyond keyword matching.</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Candidate Ranking</td>
+                        <td class="small">Learning-to-Rank (LTR)</td>
+                        <td class="small">Multi-factor ranking: skill match, experience, recency, predicted response
+                            likelihood.</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Response Prediction</td>
+                        <td class="small">Classification Model</td>
+                        <td class="small">Predicts response likelihood using: last contact, engagement history,
+                            employment status, channel preference.</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Message Generation</td>
+                        <td class="small">LLM (GPT-class)</td>
+                        <td class="small">Generates personalized outreach using candidate profile, job details, and
+                            recruiter tone preferences.</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Follow-up Optimization</td>
+                        <td class="small">Reinforcement Learning</td>
+                        <td class="small">Learns optimal timing and channel from response patterns across campaigns.
+                            <em>(v2)</em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Shortlist Learning</td>
+                        <td class="small">Implicit Feedback Loop</td>
+                        <td class="small">Tracks recruiter select/skip behavior → adjusts ranking weights over time.
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section D: AI Mechanics</span></div>
+        </div>
+
+        <!-- ========== SLIDE 19: DATA LAYERS ========== -->
+        <div class="slide">
+            <div class="section-tag d">Section D · Data & Inputs</div>
+            <h2>Four Data Layers Power Sourcing</h2>
+            <p class="subtitle small">Each layer adds intelligence — from raw resumes to network-wide AI interview data
+            </p>
+            <div class="grid2" style="flex:1;gap:16px">
+                <div class="card" style="border-left:3px solid var(--accent)">
+                    <h4>Layer 1: Recruiter's Candidate DB (Primary)</h4>
+                    <p class="small mt8">Uploaded via CSV/Excel or ATS sync. Jia enriches on ingestion: parses resumes →
+                        extracts skills, titles, experience, certifications.</p>
+                </div>
+                <div class="card" style="border-left:3px solid var(--accent3)">
+                    <h4>Layer 2: Jia Platform Data (Unique Advantage)</h4>
+                    <p class="small mt8">Past AI interviews, scores, feedback, completion rates. Engagement data: email
+                        opens, clicks, responses. <strong>Data no external tool has</strong> — Jia's proprietary edge.
+                    </p>
+                </div>
+                <div class="card" style="border-left:3px solid var(--green)">
+                    <h4>Layer 3: Jia Community Pool (Network Effect)</h4>
+                    <p class="small mt8">"Silver medalists" — candidates who passed AI interviews but weren't hired,
+                        shared by Community firms. Tagged with "Network Match" badge. Access depends on subscription
+                        tier.</p>
+                </div>
+                <div class="card" style="border-left:3px solid var(--orange)">
+                    <h4>Layer 4: Job Context (Per Search)</h4>
+                    <p class="small mt8">Job descriptions (text or structured), natural language prompts, historical
+                        shortlist patterns (what "good" looks like for this recruiter).</p>
+                </div>
+            </div>
+            <div class="card accent mt12" style="padding:14px;text-align:center">
+                <p class="small"><strong>The "Cleaning Service" value prop:</strong> When a firm subscribes, the first
+                    thing Jia does is scrub and enrich their existing data — CSVs, spreadsheets, ATS exports. Even old,
+                    dusty data becomes searchable and actionable immediately.</p>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section D: AI Mechanics</span></div>
+        </div>
+
+        <!-- ========== SLIDE 20: HUMAN IN THE LOOP ========== -->
+        <div class="slide">
+            <div class="section-tag d">Section D · Human-in-the-Loop</div>
+            <h2>Human-in-the-Loop Design</h2>
+            <p class="subtitle small">Jia augments the recruiter, never replaces them — AI proposes, human decides</p>
+            <div style="flex:1;overflow:auto">
+                <table class="deck-table" style="margin-top:8px">
+                    <tr>
+                        <th>Decision Point</th>
+                        <th>🤖 AI Does</th>
+                        <th>👤 Recruiter Does</th>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Candidate Matching</td>
+                        <td class="small">Surfaces and ranks candidates with explanations</td>
+                        <td class="small">Reviews, selects, or skips — behavior trains the model</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Outreach Messages</td>
+                        <td class="small">Drafts personalized messages per candidate</td>
+                        <td class="small">Reviews, edits, and approves before any sending</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Follow-up Sequences</td>
+                        <td class="small">Suggests timing and content</td>
+                        <td class="small">Adjusts timing, channel, and messaging</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Shortlisting</td>
+                        <td class="small">Recommends a shortlist with explanations</td>
+                        <td class="small">Curates the final list before sending to client</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600">Channel Selection</td>
+                        <td class="small">Suggests best channel (email vs SMS) based on data</td>
+                        <td class="small">Final say on communication channel</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="grid3 mt16">
+                <div class="card" style="padding:12px;text-align:center">
+                    <p class="xsmall">🔒 <strong>No messages sent</strong> without recruiter approval (v1)</p>
+                </div>
+                <div class="card" style="padding:12px;text-align:center">
+                    <p class="xsmall">💡 <strong>AI explanations mandatory</strong> — every recommendation includes
+                        "why"</p>
+                </div>
+                <div class="card" style="padding:12px;text-align:center">
+                    <p class="xsmall">🔄 <strong>Passive feedback loop</strong> — select/skip behavior is enough to
+                        train</p>
+                </div>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section D: AI Mechanics</span></div>
+        </div>
+
+        <!-- ========== SLIDE 21: COMMUNITY STRATEGY ========== -->
+        <div class="slide">
+            <div class="section-tag d">Section D · Network Strategy</div>
+            <h2>The Community Data Network</h2>
+            <p class="subtitle small">From "cleaning service" to talent co-op — a three-layer data strategy with
+                built-in network effects</p>
+            <div class="grid3" style="flex:1;gap:16px">
+                <div class="card" style="border-top:3px solid var(--accent)">
+                    <h4 style="font-size:13px;text-align:center;padding:8px 0">🔒 Standard</h4>
+                    <ul class="xsmall" style="padding-left:14px;line-height:1.8">
+                        <li>✅ Full access to your database</li>
+                        <li>❌ No Jia Network Pool</li>
+                        <li>Own AI interview scores only</li>
+                        <li>No data contribution</li>
+                        <li style="color:var(--text3)">Base price</li>
+                    </ul>
+                    <p class="xsmall mt8" style="color:var(--text3);font-style:italic;text-align:center">"I'm private
+                        and only need my data"</p>
+                </div>
+                <div class="card" style="border-top:3px solid var(--orange)">
+                    <h4 style="font-size:13px;text-align:center;padding:8px 0">🔍 Explorer</h4>
+                    <ul class="xsmall" style="padding-left:14px;line-height:1.8">
+                        <li>✅ Full access to your database</li>
+                        <li>✅ Full Jia Network Pool access</li>
+                        <li>All network interview scores</li>
+                        <li>No data contribution</li>
+                        <li style="color:var(--orange);font-weight:600">Base + ₱3K add-on (highest)</li>
+                    </ul>
+                    <p class="xsmall mt8" style="color:var(--text3);font-style:italic;text-align:center">"I want more
+                        candidates but won't share"</p>
+                </div>
+                <div class="card" style="border-top:3px solid var(--green)">
+                    <h4 style="font-size:13px;text-align:center;padding:8px 0">🤝 Community</h4>
+                    <ul class="xsmall" style="padding-left:14px;line-height:1.8">
+                        <li>✅ Full access to your database</li>
+                        <li>✅ Full Jia Network Pool access</li>
+                        <li>All network interview scores</li>
+                        <li>✅ Share "silver medalists"</li>
+                        <li style="color:var(--green);font-weight:600">Base − 20% discount (cheapest)</li>
+                    </ul>
+                    <p class="xsmall mt8" style="color:var(--text3);font-style:italic;text-align:center">"I'll
+                        contribute for the best deal"</p>
+                </div>
+            </div>
+            <div class="card accent mt12" style="padding:14px">
+                <p class="small" style="text-align:center"><strong>Incentive design, not just pricing.</strong>
+                    Community is cheapest because data contribution acts as partial payment. Explorer is most expensive
+                    because it consumes network value without giving back. This creates natural pressure toward
+                    Community.</p>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section D: Network Strategy</span>
+            </div>
+        </div>
+
+        <!-- ========== SLIDE 22: SECTION E DIVIDER ========== -->
+        <div class="slide divider-slide">
+            <div class="section-tag e">Section E · Bonus</div>
+            <h1>Pricing & Revenue</h1>
+            <p class="subtitle">How Jia should charge for the Sourcing module — commercial viability and packaging</p>
+        </div>
+
+        <!-- ========== SLIDE 23: PRICING ========== -->
+        <div class="slide">
+            <div class="section-tag e">Section E · Pricing</div>
+            <h2>Three-Tier Pricing Model</h2>
+            <p class="subtitle small">Sourcing is an add-on module — layered on top of Jia core subscription</p>
+            <div class="grid3 mt8" style="gap:16px">
+                <div class="card" style="border-top:3px solid var(--accent2)">
+                    <h4 style="text-align:center;padding:8px 0">Sourcing Starter</h4>
+                    <div style="text-align:center;font-size:28px;font-weight:800;color:var(--accent2);padding:8px 0">
+                        ₱4,999</div>
+                    <p class="xsmall" style="text-align:center;color:var(--text3);margin-bottom:12px">per recruiter /
+                        month</p>
+                    <ul class="xsmall" style="padding-left:14px;line-height:1.8">
+                        <li>500 AI sourcing searches/mo</li>
+                        <li>200 outreach messages</li>
+                        <li>2 follow-up sequences</li>
+                        <li>Basic analytics</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-top:3px solid var(--accent3);background:rgba(253,121,168,.04)">
+                    <h4 style="text-align:center;padding:8px 0">Sourcing Professional</h4>
+                    <div style="text-align:center;font-size:28px;font-weight:800;color:var(--accent3);padding:8px 0">
+                        ₱9,999</div>
+                    <p class="xsmall" style="text-align:center;color:var(--text3);margin-bottom:12px">per recruiter /
+                        month</p>
+                    <ul class="xsmall" style="padding-left:14px;line-height:1.8">
+                        <li>Unlimited searches</li>
+                        <li>1,000 outreach messages</li>
+                        <li>Unlimited follow-ups</li>
+                        <li>Campaign analytics + A/B</li>
+                        <li>Response prediction</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-top:3px solid var(--orange)">
+                    <h4 style="text-align:center;padding:8px 0">Sourcing Enterprise</h4>
+                    <div style="text-align:center;font-size:28px;font-weight:800;color:var(--orange);padding:8px 0">
+                        Custom</div>
+                    <p class="xsmall" style="text-align:center;color:var(--text3);margin-bottom:12px">contact for
+                        pricing</p>
+                    <ul class="xsmall" style="padding-left:14px;line-height:1.8">
+                        <li>Everything in Pro</li>
+                        <li>ATS integration</li>
+                        <li>SSO + dedicated support</li>
+                        <li>Custom AI model training</li>
+                        <li>Team analytics + agentic agents</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid2 mt12" style="gap:16px">
+                <div class="card" style="padding:14px">
+                    <h4 class="xsmall" style="color:var(--accent2)">WITH COMMUNITY (−20%)</h4>
+                    <p class="small mt8">Starter + Community = <strong style="color:var(--green)">₱3,999/mo</strong> ·
+                        Pro + Community = <strong style="color:var(--green)">₱7,999/mo</strong></p>
+                    <p class="xsmall mt8" style="color:var(--text3)">A 3-recruiter firm pays ~₱12K/mo total — less than
+                        one LinkedIn Recruiter Lite seat.</p>
+                </div>
+                <div class="card" style="padding:14px">
+                    <h4 class="xsmall" style="color:var(--accent2)">REVENUE ESTIMATE</h4>
+                    <p class="small mt8">With 154 recruiter seats across ~20 firms:</p>
+                    <p style="font-size:24px;font-weight:800;color:var(--accent2);margin-top:4px">~₱1.6M MRR</p>
+                    <p class="xsmall mt8" style="color:var(--text3)">Sourcing module revenue only (excludes core Jia
+                        subscriptions).</p>
+                </div>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Section E: Pricing (Bonus)</span></div>
+        </div>
+
+        <!-- ========== SLIDE 24: PHASED ROLLOUT ========== -->
+        <div class="slide">
+            <div class="section-tag c">Appendix</div>
+            <h2>Phased Rollout Plan</h2>
+            <p class="subtitle small">Ship fast, learn, iterate — from internal DB sourcing to full agentic AI</p>
+            <div class="grid3" style="flex:1;gap:16px">
+                <div class="card" style="border-left:3px solid var(--green)">
+                    <h4 style="color:var(--green)">v1 · Month 1-3 — Foundation</h4>
+                    <ul class="xsmall" style="padding-left:14px;line-height:1.9;margin-top:8px">
+                        <li>Database upload & AI parsing</li>
+                        <li>Natural language search + AI ranking</li>
+                        <li>AI-generated outreach (email)</li>
+                        <li>Follow-up sequences</li>
+                        <li>Basic campaign analytics</li>
+                        <li>Standard / Explorer / Community tiers</li>
+                        <li>Jia Network Pool (default growth)</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-left:3px solid var(--orange)">
+                    <h4 style="color:var(--orange)">v2 · Month 4-6 — Scale</h4>
+                    <ul class="xsmall" style="padding-left:14px;line-height:1.9;margin-top:8px">
+                        <li>ATS/CRM integration (Bullhorn)</li>
+                        <li>SMS/Viber outreach channel</li>
+                        <li>Advanced analytics & A/B testing</li>
+                        <li>Response prediction refinement</li>
+                        <li>"Send to Jia Interview" automation</li>
+                        <li>Community contribution dashboard</li>
+                        <li>Network Match badges</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-left:3px solid var(--accent3)">
+                    <h4 style="color:var(--accent3)">v3 · Month 7-12 — Differentiate</h4>
+                    <ul class="xsmall" style="padding-left:14px;line-height:1.9;margin-top:8px">
+                        <li>External sourcing (LinkedIn, JobStreet)</li>
+                        <li>Full agentic AI (24/7 sourcing agents)</li>
+                        <li>RAG-enhanced outreach personalization</li>
+                        <li>Intent signal detection</li>
+                        <li>Multi-language support</li>
+                        <li>AI-generated client reports</li>
+                        <li>Cross-network skill analytics</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer"><span>Julia — Jia PM Practical</span><span>Appendix: Rollout Plan</span></div>
+        </div>
+
+        <!-- ========== SLIDE 25: CLOSING ========== -->
+        <div class="slide divider-slide"
+            style="background:radial-gradient(ellipse at 30% 50%,rgba(108,92,231,.15),transparent 60%),radial-gradient(ellipse at 70% 80%,rgba(253,121,168,.1),transparent 50%)">
+            <h1 style="font-size:44px;margin-bottom:24px">Jia doesn't just find candidates.</h1>
+            <p style="font-size:20px;color:var(--text);max-width:700px;margin:0 auto 32px;line-height:1.6">It finds,
+                engages, screens, and shortlists them — <strong style="color:var(--accent2)">end to end, powered by
+                    AI</strong>, with the recruiter in control.</p>
+            <div class="flow" style="justify-content:center;margin-bottom:32px">
+                <div class="step" style="border-color:var(--accent);color:var(--accent2)">Source</div>
+                <span class="arrow">→</span>
+                <div class="step" style="border-color:var(--accent);color:var(--accent2)">Engage</div>
+                <span class="arrow">→</span>
+                <div class="step" style="border-color:var(--accent);color:var(--accent2)">Screen</div>
+                <span class="arrow">→</span>
+                <div class="step" style="border-color:var(--accent);color:var(--accent2)">Interview</div>
+                <span class="arrow">→</span>
+                <div class="step" style="border-color:var(--green);color:var(--green)">Shortlist ✨</div>
+            </div>
+            <div class="quote"
+                style="max-width:500px;margin:0 auto;text-align:center;font-size:18px;font-weight:600;border-left:none;background:rgba(253,121,168,.08);border-radius:12px;padding:20px">
+                "LinkedIn sells quantity.<br>Jia sells quality with proof."
+            </div>
+            <div style="margin-top:48px;color:var(--text3);font-size:14px">
+                <p>Julia · February 2026</p>
+                <p class="xsmall mt8">Interactive Prototype: <strong>jia-sourcing-prototype/</strong> folder</p>
+            </div>
+        </div>
+
+    </div><!-- end deck -->
+
+    <div class="nav">
+        <button onclick="prev()" id="prevBtn">‹</button>
+        <span class="counter" id="counter">1 / 25</span>
+        <button onclick="next()" id="nextBtn">›</button>
+    </div>
+
+    <style>
+        .toc-back {
+            position: absolute;
+            top: 14px;
+            left: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text3);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+            z-index: 10;
+            text-decoration: none
+        }
+
+        .toc-back:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: rgba(91, 76, 219, .05)
+        }
+    </style>
+
+    <script>
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        const total = slides.length;
+
+        function showSlide(n) {
+            slides[current].classList.remove('active');
+            current = Math.max(0, Math.min(n, total - 1));
+            slides[current].classList.add('active');
+            document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+            document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+        }
+        function next() { showSlide(current + 1); }
+        function prev() { showSlide(current - 1); }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+        });
+
+        // Inject back-to-TOC button on every slide except Title (0) and TOC (1)
+        slides.forEach((slide, i) => {
+            if (i <= 1) return;
+            const btn = document.createElement('a');
+            btn.className = 'toc-back';
+            btn.innerHTML = '← Contents';
+            btn.onclick = () => showSlide(1);
+            slide.style.position = 'relative';
+            slide.prepend(btn);
+        });
+
+        // Init
+        showSlide(0);
+    </script>
+
 </body>
 
 </html>

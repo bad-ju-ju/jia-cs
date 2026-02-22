@@ -4,7 +4,7 @@
 // ========================================================
 
 // Current page detection
-const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+const currentPage = window.location.pathname.split('/').pop() || 'setup.html';
 
 // Sidebar HTML (injected into every page)
 function renderSidebar() {
@@ -17,7 +17,7 @@ function renderSidebar() {
     { icon: '👥', label: 'Candidates', href: '#', section: 'core' },
     { icon: '📋', label: 'ATS Pipeline', href: '#', section: 'core' },
     { divider: true, label: 'SOURCING MODULE' },
-    { icon: '✨', label: 'Setup', href: 'index.html', section: 'sourcing', page: 'index.html', badge: 'NEW' },
+    { icon: '✨', label: 'Setup', href: 'setup.html', section: 'sourcing', page: 'setup.html', badge: 'NEW' },
     { icon: '👥', label: 'Database', href: 'database.html', section: 'sourcing', page: 'database.html' },
     { icon: '📋', label: 'Job Orders', href: 'joborder.html', section: 'sourcing', page: 'joborder.html' },
     { icon: '🔍', label: 'Search', href: 'search.html', section: 'sourcing', page: 'search.html' },
@@ -27,7 +27,7 @@ function renderSidebar() {
   ];
 
   let navHTML = `
-    <a href="index.html" class="sidebar-logo">
+    <a href="setup.html" class="sidebar-logo">
       <div class="owl-icon">🦉</div>
       <span>Jia</span>
     </a>
