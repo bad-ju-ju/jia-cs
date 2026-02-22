@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jia Sourcing — Results</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Give card action buttons colored backgrounds */
+        .card-actions .btn-ghost.btn-sm {
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            color: var(--jia-text-secondary);
+            transition: all 0.2s;
+        }
+
+        .card-actions .btn-ghost.btn-sm:hover {
+            border-color: #32325d;
+            background: #eef2f7;
+        }
+
+        /* First button: View Profile — primary dark */
+        .card-actions .btn-ghost.btn-sm:first-child {
+            background: var(--jia-black);
+            color: white;
+            border-color: var(--jia-black);
+        }
+
+        .card-actions .btn-ghost.btn-sm:first-child:hover {
+            opacity: 0.85;
+        }
+
+        /* Second button: Shortlist — warm pastel */
+        .card-actions .btn-ghost.btn-sm:nth-child(2) {
+            background: rgba(252, 206, 192, 0.25);
+            border-color: rgba(252, 206, 192, 0.6);
+            color: #c4553d;
+        }
+
+        .card-actions .btn-ghost.btn-sm:nth-child(2):hover {
+            background: rgba(252, 206, 192, 0.4);
+        }
+
+        /* Third button: AI Interview — soft blue */
+        .card-actions .btn-ghost.btn-sm:nth-child(3) {
+            background: rgba(159, 202, 237, 0.2);
+            border-color: rgba(159, 202, 237, 0.5);
+            color: #2b6cb0;
+        }
+
+        .card-actions .btn-ghost.btn-sm:nth-child(3):hover {
+            background: rgba(159, 202, 237, 0.35);
+        }
+
+
+
+        /* Source type badges */
+        .source-badge {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .source-badge.applicant {
+            background: rgba(16, 185, 129, 0.08);
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .source-badge.sourced {
+            background: rgba(50, 50, 93, 0.06);
+            color: #32325d;
+            border: 1px solid rgba(50, 50, 93, 0.12);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar"></aside>
+
+        <main class="main-content">
+            <div class="breadcrumb">
+                <a href="index.html">Sourcing</a>
+                <span class="sep">›</span>
+                <a href="search.html">Search</a>
+                <span class="sep">›</span>
+                <span>Results</span>
+            </div>
+
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <h1>🎯 AI-Ranked Results</h1>
+                    <p class="subtitle">34 candidates matched · "Accountants in Cebu with CPA, 3+ years"</p>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span id="selectedCount"
+                        style="font-size: 13px; color: var(--jia-text-muted); display: none; align-items: center; margin-right: 8px;">
+                        <span id="selCount">0</span> selected
+                    </span>
+                    <a href="outreach.html" class="btn-primary" id="outreachBtn">
+                        📨 Launch Outreach
+                    </a>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <span style="font-size: 13px; color: var(--jia-text-muted); margin-right: 4px;">Filters:</span>
+                <button class="filter-chip active">Applicant</button>
+                <button class="filter-chip active">Sourced</button>
+                <button class="filter-chip active">🌐 Network Match</button>
+                <span style="width: 1px; height: 20px; background: #e2e8f0; margin: 0 4px;"></span>
+                <button class="filter-chip active">Cebu</button>
+                <button class="filter-chip active">CPA</button>
+                <button class="filter-chip active">3+ years</button>
+                <button class="filter-chip">Currently employed</button>
+                <button class="filter-chip">Not contacted (90d)</button>
+                <button class="filter-chip">Jia interview score 80+</button>
+                <button class="filter-chip">High response prediction</button>
+            </div>
+
+            <!-- Toolbar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <span style="font-size: 13px; color: var(--jia-text-muted);">Sorted by: <strong
+                        style="color: var(--jia-text-secondary);">AI Fit Score</strong></span>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button class="btn-ghost btn-sm" onclick="selectAll()">Select All</button>
+                    <button class="btn-ghost btn-sm">Sort</button>
+
+                </div>
+            </div>
+
+            <!-- Upsell Banner: Network Match preview -->
+            <div class="upsell-banner">
+                <div class="upsell-text">
+                    🌐 <strong>2 Network Matches</strong> found from the Jia Community Pool — candidates vetted by other
+                    firms who passed AI interviews but weren't hired. You're seeing these because you're on the
+                    <strong>Community</strong> tier.
+                </div>
+            </div>
+
+            <!-- Candidate Cards -->
+            <div id="candidateList" class="stagger">
+
+                <!-- Candidate 1: Applicant -->
+                <div class="candidate-card animate-fade-in-up" onclick="toggleSelect(this)">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="custom-checkbox"
+                                onclick="event.stopPropagation(); toggleSelect(this.closest('.candidate-card'))"></div>
+                            <a href="candidate.html" class="candidate-name"
+                                style="color: var(--jia-text-primary); text-decoration: none;"
+                                onclick="event.stopPropagation()">Maria Santos, CPA</a>
+                            <span class="source-badge applicant">Applicant</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge-fit-high">92% Fit</span>
+                            <span class="badge badge-teal">85% Response</span>
+                        </div>
+                    </div>
+                    <div class="candidate-meta">
+                        <span>Cebu City</span>
+                        <span>Senior Accountant · 5 yrs</span>
+                        <span>Currently at PKF Accountants</span>
+                        <span>Last contacted: 8 months ago</span>
+                    </div>
+                    <div class="ai-summary">
+                        <div class="ai-label">✨ AI Summary</div>
+                        CPA with 5 years in public accounting. Strong match for the SR Accountant role at ABC Corp:
+                        expertise in financial reporting, QuickBooks certified, Cebu-based. Previously interviewed via
+                        Jia for a similar role (scored 85/100) but wasn't selected — high re-engagement potential.
+                    </div>
+                    <div class="card-actions">
+                        <a href="candidate.html" class="btn-ghost btn-sm" onclick="event.stopPropagation()">👤 View
+                            Profile</a>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('Added to shortlist')">⭐ Shortlist</button>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('AI Interview invitation sent')">🎤 AI
+                            Interview</button>
+                    </div>
+
+                </div>
+
+                <!-- Candidate 2: Sourced -->
+                <div class="candidate-card animate-fade-in-up" onclick="toggleSelect(this)">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="custom-checkbox"
+                                onclick="event.stopPropagation(); toggleSelect(this.closest('.candidate-card'))"></div>
+                            <span class="candidate-name">Rafael Cruz</span>
+                            <span class="source-badge sourced">Sourced</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge-fit-high">88% Fit</span>
+                            <span class="badge badge-teal">78% Response</span>
+                        </div>
+                    </div>
+                    <div class="candidate-meta">
+                        <span>Mandaue, Cebu</span>
+                        <span>Audit Associate · 4 yrs</span>
+                        <span>SGV & Co.</span>
+                        <span>Last contacted: 14 months ago</span>
+                    </div>
+                    <div class="ai-summary">
+                        <div class="ai-label">✨ AI Summary</div>
+                        Audit associate at a Big 4 firm with CPA license. Highly qualified but slightly overqualified
+                        for the entry-level aspects of this role. His profile shows upward trajectory — recommendation:
+                        position as a leadership opportunity. No previous Jia interaction.
+                    </div>
+                    <div class="card-actions">
+                        <a href="candidate.html" class="btn-ghost btn-sm" onclick="event.stopPropagation()">👤 View
+                            Profile</a>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('Added to shortlist')">⭐ Shortlist</button>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('AI Interview invitation sent')">🎤 AI
+                            Interview</button>
+                    </div>
+
+                </div>
+
+                <!-- Candidate 3: Sourced -->
+                <div class="candidate-card animate-fade-in-up" onclick="toggleSelect(this)">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="custom-checkbox"
+                                onclick="event.stopPropagation(); toggleSelect(this.closest('.candidate-card'))"></div>
+                            <span class="candidate-name">Jasmine Yap, CPA</span>
+                            <span class="source-badge network">🌐 Network Match</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge-fit-high">85% Fit</span>
+                            <span class="badge badge-fit-medium">62% Response</span>
+                        </div>
+                    </div>
+                    <div class="candidate-meta">
+                        <span>Cebu City</span>
+                        <span>Staff Accountant · 3 yrs</span>
+                        <span>Freelance</span>
+                        <span>Never contacted</span>
+                    </div>
+                    <div class="ai-summary"
+                        style="background: rgba(124, 92, 188, 0.06); border-color: rgba(124, 92, 188, 0.15);">
+                        <div class="ai-label">✨ AI Summary · via Community Pool</div>
+                        CPA with 3 years experience, currently freelancing. <strong>AI-verified candidate</strong> —
+                        completed a Jia AI interview for a similar role (communication: strong, engagement: active).
+                        Good technical match — QuickBooks and SAP
+                        experience. Cebu-based, available immediately.
+                    </div>
+                    <div class="card-actions">
+                        <a href="candidate.html" class="btn-ghost btn-sm" onclick="event.stopPropagation()">👤 View
+                            Profile</a>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('Added to shortlist')">⭐ Shortlist</button>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('AI Interview invitation sent')">🎤 AI
+                            Interview</button>
+                    </div>
+
+                </div>
+
+                <!-- Candidate 4: Applicant -->
+                <div class="candidate-card animate-fade-in-up" onclick="toggleSelect(this)">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="custom-checkbox"
+                                onclick="event.stopPropagation(); toggleSelect(this.closest('.candidate-card'))"></div>
+                            <span class="candidate-name">Mark Villanueva</span>
+                            <span class="source-badge applicant">Applicant</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge-fit-medium">72% Fit</span>
+                            <span class="badge badge-teal">80% Response</span>
+                        </div>
+                    </div>
+                    <div class="candidate-meta">
+                        <span>Lapu-Lapu, Cebu</span>
+                        <span>Bookkeeper · 6 yrs</span>
+                        <span>Between jobs</span>
+                        <span>Last contacted: 3 months ago</span>
+                    </div>
+                    <div class="ai-summary">
+                        <div class="ai-label">AI Summary</div>
+                        Experienced bookkeeper but no CPA license. Strong in QuickBooks and Xero. Good cultural fit and
+                        high response likelihood (currently between jobs). Missing CPA is a gap but could be a strong
+                        candidate if role requirements are flexible.
+                    </div>
+                    <div class="card-actions">
+                        <a href="candidate.html" class="btn-ghost btn-sm" onclick="event.stopPropagation()">👤 View
+                            Profile</a>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('Added to shortlist')">⭐ Shortlist</button>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('AI Interview invitation sent')">🎤 AI
+                            Interview</button>
+                    </div>
+
+                </div>
+
+                <!-- Candidate 5: Sourced -->
+                <div class="candidate-card animate-fade-in-up" onclick="toggleSelect(this)">
+                    <div class="card-header">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="custom-checkbox"
+                                onclick="event.stopPropagation(); toggleSelect(this.closest('.candidate-card'))"></div>
+                            <span class="candidate-name">Anna Lim, CPA</span>
+                            <span class="source-badge network">🌐 Network Match</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge-fit-medium">68% Fit</span>
+                            <span class="badge badge-fit-low">35% Response</span>
+                        </div>
+                    </div>
+                    <div class="candidate-meta">
+                        <span>Cebu City</span>
+                        <span>Finance Manager · 8 yrs</span>
+                        <span>Currently at Accenture</span>
+                        <span>Last contacted: 2 months ago (no reply)</span>
+                    </div>
+                    <div class="ai-summary"
+                        style="background: rgba(124, 92, 188, 0.06); border-color: rgba(124, 92, 188, 0.15);">
+                        <div class="ai-label">✨ AI Summary · via Community Pool</div>
+                        Finance Manager with 8 years at Accenture. CPA with MBA. <strong>AI-verified candidate</strong>
+                        — completed a Jia AI interview (communication: excellent, analytical skills: strong).
+                        Overqualified for entry-level roles but excellent for senior positions.
+                        Low response prediction due to current employment at high-prestige firm.
+                    </div>
+                    <div class="card-actions">
+                        <a href="candidate.html" class="btn-ghost btn-sm" onclick="event.stopPropagation()">👤 View
+                            Profile</a>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('Added to shortlist')">⭐ Shortlist</button>
+                        <button class="btn-ghost btn-sm"
+                            onclick="event.stopPropagation(); showToast('AI Interview invitation sent')">🎤 AI
+                            Interview</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Load more -->
+            <div style="text-align: center; margin-top: 24px;">
+                <button class="btn-secondary" onclick="showToast('Loading more candidates...')">
+                    Load More (29 remaining)
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        let selectedCount = 0;
+
+        function toggleSelect(card) {
+            const cb = card.querySelector('.custom-checkbox');
+            cb.classList.toggle('checked');
+
+            if (cb.classList.contains('checked')) {
+                card.style.borderColor = '#32325d';
+                card.style.background = 'rgba(240, 249, 255, 0.6)';
+                selectedCount++;
+            } else {
+                card.style.borderColor = '';
+                card.style.background = '';
+                selectedCount--;
+            }
+
+            const counter = document.getElementById('selectedCount');
+            const countSpan = document.getElementById('selCount');
+            if (selectedCount > 0) {
+                counter.style.display = 'flex';
+                countSpan.textContent = selectedCount;
+            } else {
+                counter.style.display = 'none';
+            }
+        }
+
+        function selectAll() {
+            const cards = document.querySelectorAll('.candidate-card');
+            cards.forEach(card => {
+                const cb = card.querySelector('.custom-checkbox');
+                if (!cb.classList.contains('checked')) {
+                    toggleSelect(card);
+                }
+            });
+        }
+
+
+    </script>
+</body>
+
+</html>

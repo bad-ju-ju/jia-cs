@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jia Sourcing — Candidate Database</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Table styles */
+        .db-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+        }
+
+        .db-table thead th {
+            text-align: left;
+            padding: 10px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--jia-text-muted);
+            border-bottom: 2px solid #eef2f7;
+            background: #fafbfc;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .db-table tbody tr {
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .db-table tbody tr:hover {
+            background: rgba(240, 249, 255, 0.5);
+        }
+
+        .db-table tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--jia-text-primary);
+            vertical-align: middle;
+        }
+
+        .db-table .name-cell {
+            font-weight: 600;
+        }
+
+        .db-table .muted {
+            color: var(--jia-text-muted);
+            font-size: 12px;
+        }
+
+        /* Status dots */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .status-dot.active {
+            background: #34d399;
+        }
+
+        .status-dot.idle {
+            background: #fbbf24;
+        }
+
+        .status-dot.stale {
+            background: #f87171;
+        }
+
+        /* Toolbar */
+        .db-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+
+        .db-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px 14px;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .db-search input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+            font-family: 'Satoshi', sans-serif;
+            color: var(--jia-text-primary);
+            width: 100%;
+            background: transparent;
+        }
+
+        .db-search input::placeholder {
+            color: var(--jia-text-muted);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--jia-text-muted);
+        }
+
+        .pagination .page-btns {
+            display: flex;
+            gap: 4px;
+        }
+
+        .pagination .page-btn {
+            padding: 6px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Satoshi', sans-serif;
+            color: var(--jia-text-secondary);
+            transition: all 0.15s;
+        }
+
+        .pagination .page-btn:hover {
+            border-color: #32325d;
+        }
+
+        .pagination .page-btn.active {
+            background: var(--jia-black);
+            color: white;
+            border-color: var(--jia-black);
+        }
+
+        /* Source badge in table */
+        .src-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .src-badge.uploaded {
+            background: rgba(159, 202, 237, 0.2);
+            color: #2b6cb0;
+        }
+
+        .src-badge.applied {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .src-badge.referral {
+            background: rgba(206, 182, 218, 0.25);
+            color: #7c3aed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar"></aside>
+
+        <main class="main-content">
+            <div class="breadcrumb">
+                <a href="index.html">Sourcing</a>
+                <span class="sep">›</span>
+                <span>Candidate Database</span>
+            </div>
+
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <h1>👥 Candidate Database</h1>
+                    <p class="subtitle">12,450 profiles · Last synced 2 minutes ago</p>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn-secondary" onclick="showToast('Export started — CSV will download shortly')">📥
+                        Export</button>
+                    <button class="btn-primary" onclick="showToast('Upload dialog coming soon')">+ Add
+                        Candidates</button>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid stagger" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 24px;">
+                <div class="stat-card animate-fade-in-up">
+                    <div class="stat-value" data-count="12450">0</div>
+                    <div class="stat-label">Total Profiles</div>
+                </div>
+                <div class="stat-card animate-fade-in-up">
+                    <div class="stat-value" data-count="1230">0</div>
+                    <div class="stat-label">Added This Month</div>
+                </div>
+                <div class="stat-card animate-fade-in-up">
+                    <div class="stat-value" data-count="4350">0</div>
+                    <div class="stat-label">Active (90 days)</div>
+                </div>
+                <div class="stat-card animate-fade-in-up">
+                    <div class="stat-value" data-count="187">0</div>
+                    <div class="stat-label">Duplicates Flagged</div>
+                </div>
+                <div class="stat-card animate-fade-in-up">
+                    <div class="stat-value" data-count="892">0</div>
+                    <div class="stat-label">Profiles Need Update</div>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="db-toolbar">
+                <div class="db-search">
+                    <span style="color: var(--jia-text-muted);">🔍</span>
+                    <input type="text" placeholder="Search by name, skill, location, company...">
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button class="filter-chip active">All Sources</button>
+                    <button class="filter-chip">Uploaded</button>
+                    <button class="filter-chip">Applied</button>
+                    <button class="filter-chip">Referral</button>
+                    <span style="width: 1px; height: 20px; background: #e2e8f0;"></span>
+                    <button class="btn-ghost btn-sm" onclick="showToast('Bulk actions: Tag, Export, Delete')">⚡ Bulk
+                        Actions</button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="glass-card no-hover" style="padding: 0; overflow: hidden;">
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 32px;"><input type="checkbox" style="cursor: pointer;"></th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>Current Role</th>
+                            <th>Skills</th>
+                            <th>Experience</th>
+                            <th>Source</th>
+                            <th>Last Contacted</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Maria Santos, CPA</td>
+                            <td>Cebu City</td>
+                            <td>Senior Accountant<br><span class="muted">PKF Accountants</span></td>
+                            <td><span class="skill-tag">CPA</span> <span class="skill-tag">QuickBooks</span></td>
+                            <td>5 yrs</td>
+                            <td><span class="src-badge applied">Applied</span></td>
+                            <td class="muted">8 months ago</td>
+                            <td><span class="status-dot active"></span>Active</td>
+                        </tr>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Rafael Cruz</td>
+                            <td>Mandaue, Cebu</td>
+                            <td>Audit Associate<br><span class="muted">SGV & Co.</span></td>
+                            <td><span class="skill-tag">CPA</span> <span class="skill-tag">Audit</span></td>
+                            <td>4 yrs</td>
+                            <td><span class="src-badge uploaded">Uploaded</span></td>
+                            <td class="muted">14 months ago</td>
+                            <td><span class="status-dot idle"></span>Idle</td>
+                        </tr>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Jasmine Yap, CPA</td>
+                            <td>Cebu City</td>
+                            <td>Staff Accountant<br><span class="muted">Freelance</span></td>
+                            <td><span class="skill-tag">SAP</span> <span class="skill-tag">QuickBooks</span></td>
+                            <td>3 yrs</td>
+                            <td><span class="src-badge uploaded">Uploaded</span></td>
+                            <td class="muted">Never</td>
+                            <td><span class="status-dot active"></span>Active</td>
+                        </tr>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Mark Villanueva</td>
+                            <td>Lapu-Lapu, Cebu</td>
+                            <td>Bookkeeper<br><span class="muted">Between jobs</span></td>
+                            <td><span class="skill-tag">Bookkeeping</span> <span class="skill-tag">Xero</span></td>
+                            <td>6 yrs</td>
+                            <td><span class="src-badge applied">Applied</span></td>
+                            <td class="muted">3 months ago</td>
+                            <td><span class="status-dot active"></span>Active</td>
+                        </tr>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Andrea Lim</td>
+                            <td>Cebu City</td>
+                            <td>Finance Manager<br><span class="muted">Accenture</span></td>
+                            <td><span class="skill-tag">CPA</span> <span class="skill-tag">SAP</span> <span
+                                    class="skill-tag">IFRS</span></td>
+                            <td>8 yrs</td>
+                            <td><span class="src-badge uploaded">Uploaded</span></td>
+                            <td class="muted">6 months ago</td>
+                            <td><span class="status-dot active"></span>Active</td>
+                        </tr>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Carlos Reyes</td>
+                            <td>Manila</td>
+                            <td>Tax Consultant<br><span class="muted">PwC Philippines</span></td>
+                            <td><span class="skill-tag">Tax</span> <span class="skill-tag">CPA</span></td>
+                            <td>7 yrs</td>
+                            <td><span class="src-badge referral">Referral</span></td>
+                            <td class="muted">1 month ago</td>
+                            <td><span class="status-dot active"></span>Active</td>
+                        </tr>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Patricia Go</td>
+                            <td>BGC, Taguig</td>
+                            <td>Java Developer<br><span class="muted">Globe Telecom</span></td>
+                            <td><span class="skill-tag">Java</span> <span class="skill-tag">Spring</span> <span
+                                    class="skill-tag">AWS</span></td>
+                            <td>5 yrs</td>
+                            <td><span class="src-badge uploaded">Uploaded</span></td>
+                            <td class="muted">2 months ago</td>
+                            <td><span class="status-dot active"></span>Active</td>
+                        </tr>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Kevin Tan</td>
+                            <td>Clark, Pampanga</td>
+                            <td>Call Center Agent<br><span class="muted">Concentrix</span></td>
+                            <td><span class="skill-tag">English</span> <span class="skill-tag">CRM</span></td>
+                            <td>3 yrs</td>
+                            <td><span class="src-badge applied">Applied</span></td>
+                            <td class="muted">2 weeks ago</td>
+                            <td><span class="status-dot active"></span>Active</td>
+                        </tr>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Diane Dela Cruz</td>
+                            <td>Makati City</td>
+                            <td>HR Generalist<br><span class="muted">Ayala Land</span></td>
+                            <td><span class="skill-tag">HRIS</span> <span class="skill-tag">Recruiting</span></td>
+                            <td>4 yrs</td>
+                            <td><span class="src-badge uploaded">Uploaded</span></td>
+                            <td class="muted">10 months ago</td>
+                            <td><span class="status-dot idle"></span>Idle</td>
+                        </tr>
+                        <tr onclick="window.location.href='candidate.html'">
+                            <td><input type="checkbox" onclick="event.stopPropagation()" style="cursor: pointer;"></td>
+                            <td class="name-cell">Miguel Aquino</td>
+                            <td>Cebu City</td>
+                            <td>Accounts Payable<br><span class="muted">Lexmark</span></td>
+                            <td><span class="skill-tag">AP</span> <span class="skill-tag">SAP</span></td>
+                            <td>2 yrs</td>
+                            <td><span class="src-badge uploaded">Uploaded</span></td>
+                            <td class="muted">18 months ago</td>
+                            <td><span class="status-dot stale"></span>Stale</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <span>Showing 1–10 of 12,450 candidates</span>
+                <div class="page-btns">
+                    <button class="page-btn">‹ Prev</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn">...</button>
+                    <button class="page-btn">1245</button>
+                    <button class="page-btn">Next ›</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

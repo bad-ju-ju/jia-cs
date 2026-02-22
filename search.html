@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jia Sourcing — Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar"></aside>
+
+        <main class="main-content">
+            <div class="breadcrumb">
+                <a href="index.html">Sourcing</a>
+                <span class="sep">›</span>
+                <span>Search & Discovery</span>
+            </div>
+
+            <div class="page-header">
+                <h1>🔍 Find Your Next Great Candidate</h1>
+                <p class="subtitle">Search your database of 12,450 candidates using natural language</p>
+            </div>
+
+            <!-- Natural Language Search -->
+            <div class="search-box" style="margin-bottom: 24px;"
+                onclick="document.getElementById('searchInput').focus()">
+                <span class="search-icon">✨</span>
+                <textarea id="searchInput" rows="2"
+                    placeholder='Try: "Find experienced accountants in Cebu who are currently available and were last contacted more than 6 months ago"'></textarea>
+                <button class="search-btn" onclick="event.stopPropagation(); window.location.href='results.html'">
+                    Search
+                </button>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 24px;">
+                <a href="joborder.html" class="btn-secondary" style="font-size: 13px; padding: 8px 16px;">📋 Create Job
+                    Order</a>
+                <span style="font-size: 12px; color: var(--jia-text-muted);">Define structured requirements instead of
+                    free-text search</span>
+            </div>
+
+            <div class="divider">OR</div>
+
+            <!-- Quick Job Order Shortcuts -->
+            <div style="margin-bottom: 32px;">
+                <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--jia-text-secondary);">
+                    📋 Select from Active Job Orders
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px;">
+
+                    <a href="results.html" class="glass-card"
+                        style="text-decoration: none; display: block; padding: 16px 20px; cursor: pointer;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                            <span style="font-size: 15px; font-weight: 600; color: var(--jia-text-primary);">Senior
+                                Accountant</span>
+                            <span class="badge badge-teal">5 spots</span>
+                        </div>
+                        <div style="font-size: 13px; color: var(--jia-text-muted); margin-bottom: 8px;">ABC Corp — Cebu
+                            City</div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <span class="skill-tag">CPA</span>
+                            <span class="skill-tag">QuickBooks</span>
+                            <span class="skill-tag">3+ yrs</span>
+                        </div>
+                        <div style="font-size: 11px; color: var(--jia-text-muted); margin-top: 10px;">Posted 2 days ago
+                            · 3 applicants</div>
+                    </a>
+
+                    <a href="results.html" class="glass-card"
+                        style="text-decoration: none; display: block; padding: 16px 20px; cursor: pointer;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                            <span style="font-size: 15px; font-weight: 600; color: var(--jia-text-primary);">Java
+                                Developer</span>
+                            <span class="badge badge-teal">3 spots</span>
+                        </div>
+                        <div style="font-size: 13px; color: var(--jia-text-muted); margin-bottom: 8px;">XYZ Tech — BGC,
+                            Taguig</div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <span class="skill-tag">Java</span>
+                            <span class="skill-tag">Spring Boot</span>
+                            <span class="skill-tag">AWS</span>
+                        </div>
+                        <div style="font-size: 11px; color: var(--jia-text-muted); margin-top: 10px;">Posted 1 day ago ·
+                            8 applicants</div>
+                    </a>
+
+                    <a href="results.html" class="glass-card"
+                        style="text-decoration: none; display: block; padding: 16px 20px; cursor: pointer;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                            <span style="font-size: 15px; font-weight: 600; color: var(--jia-text-primary);">Call Center
+                                Agent</span>
+                            <span class="badge badge-teal">20 spots</span>
+                        </div>
+                        <div style="font-size: 13px; color: var(--jia-text-muted); margin-bottom: 8px;">MNO BPO — Clark,
+                            Pampanga</div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <span class="skill-tag">English</span>
+                            <span class="skill-tag">Customer Service</span>
+                            <span class="skill-tag">Night Shift</span>
+                        </div>
+                        <div style="font-size: 11px; color: var(--jia-text-muted); margin-top: 10px;">Posted 5 days ago
+                            · 42 applicants</div>
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- Database Health -->
+            <div style="margin-bottom: 32px;">
+                <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--jia-text-secondary);">
+                    📊 Database Health
+                </h3>
+                <div class="stats-grid stagger" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="stat-card animate-fade-in-up">
+                        <div class="stat-value" data-count="12450">0</div>
+                        <div class="stat-label">Total Profiles</div>
+                    </div>
+                    <div class="stat-card animate-fade-in-up">
+                        <div class="stat-value" data-count="4350">0</div>
+                        <div class="stat-label">Active (90 days)</div>
+                    </div>
+                    <div class="stat-card animate-fade-in-up">
+                        <div class="stat-value" data-count="3200">0</div>
+                        <div class="stat-label">Not Contacted</div>
+                    </div>
+                    <div class="stat-card animate-fade-in-up">
+                        <div class="stat-value" data-count="2890">0</div>
+                        <div class="stat-label">Engaged (replied)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Searches -->
+            <div>
+                <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--jia-text-secondary);">
+                    🕐 Recent Searches
+                </h3>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <a href="results.html" class="glass-card"
+                        style="text-decoration: none; display: flex; align-items: center; gap: 16px; padding: 14px 20px; cursor: pointer;">
+                        <span style="font-size: 16px;">🔍</span>
+                        <div style="flex: 1;">
+                            <div style="font-size: 14px; color: var(--jia-text-primary);">"Accountants in Cebu with CPA,
+                                3+ years"</div>
+                            <div style="font-size: 12px; color: var(--jia-text-muted); margin-top: 2px;">34 results · 2
+                                hours ago</div>
+                        </div>
+                        <span class="badge badge-purple">34</span>
+                    </a>
+                    <a href="results.html" class="glass-card"
+                        style="text-decoration: none; display: flex; align-items: center; gap: 16px; padding: 14px 20px; cursor: pointer;">
+                        <span style="font-size: 16px;">🔍</span>
+                        <div style="flex: 1;">
+                            <div style="font-size: 14px; color: var(--jia-text-primary);">"Java developers who
+                                interviewed well but didn't get hired last time"</div>
+                            <div style="font-size: 12px; color: var(--jia-text-muted); margin-top: 2px;">12 results ·
+                                Yesterday</div>
+                        </div>
+                        <span class="badge badge-purple">12</span>
+                    </a>
+                    <a href="results.html" class="glass-card"
+                        style="text-decoration: none; display: flex; align-items: center; gap: 16px; padding: 14px 20px; cursor: pointer;">
+                        <span style="font-size: 16px;">🔍</span>
+                        <div style="flex: 1;">
+                            <div style="font-size: 14px; color: var(--jia-text-primary);">"Customer service reps, night
+                                shift available, Clark or Pampanga"</div>
+                            <div style="font-size: 12px; color: var(--jia-text-muted); margin-top: 2px;">67 results · 3
+                                days ago</div>
+                        </div>
+                        <span class="badge badge-purple">67</span>
+                    </a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

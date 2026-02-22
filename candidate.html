@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jia Sourcing — Candidate Profile</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar"></aside>
+
+        <main class="main-content">
+            <div class="breadcrumb">
+                <a href="index.html">Sourcing</a>
+                <span class="sep">›</span>
+                <a href="results.html">Results</a>
+                <span class="sep">›</span>
+                <span>Maria Santos</span>
+            </div>
+
+            <!-- Profile Header -->
+            <div class="glass-card no-hover"
+                style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+                <div style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div
+                        style="width: 72px; height: 72px; border-radius: 16px; background: #1a1a2e; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: white; flex-shrink: 0;">
+                        MS
+                    </div>
+                    <div>
+                        <h1
+                            style="font-size: 26px; margin-bottom: 4px; background: linear-gradient(90deg, rgb(159, 202, 237) 0%, rgb(206, 182, 218) 33%, rgb(235, 172, 201) 66%, rgb(252, 206, 192) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            Maria Santos, CPA
+                        </h1>
+                        <div
+                            style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 14px; color: var(--jia-text-secondary); margin-bottom: 12px;">
+                            <span>📍 Cebu City, Philippines</span>
+                            <span>💼 Senior Accountant · 5 yrs</span>
+                            <span>🏢 PKF Accountants</span>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <span class="badge badge-fit-high" style="font-size: 13px; padding: 6px 14px;">92%
+                                Fit</span>
+                            <span class="badge badge-teal" style="font-size: 13px; padding: 6px 14px;">🟢 85% Response
+                                Prediction</span>
+                            <span class="badge badge-purple" style="font-size: 13px; padding: 6px 14px;">⭐ Jia
+                                Candidate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <a href="outreach.html" class="btn-primary">📨 Send Outreach</a>
+                    <button class="btn-secondary" onclick="showToast('Added to shortlist')">⭐ Shortlist</button>
+                    <button class="btn-secondary" onclick="showToast('AI Interview link sent')">🎤 AI Interview</button>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+
+                <!-- Left Column -->
+                <div>
+                    <!-- AI Match Analysis -->
+                    <div class="glass-card no-hover" style="margin-bottom: 24px;">
+                        <h3 style="font-size: 15px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                            ✨ AI Match Analysis
+                            <span style="font-size: 12px; font-weight: 400; color: var(--jia-text-muted);">for Senior
+                                Accountant — ABC Corp</span>
+                        </h3>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <span style="font-size: 16px; flex-shrink: 0;">✅</span>
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 500; color: var(--jia-text-primary);">CPA
+                                        License — Required</div>
+                                    <div style="font-size: 13px; color: var(--jia-text-muted);">Active CPA license since
+                                        2021</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <span style="font-size: 16px; flex-shrink: 0;">✅</span>
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 500; color: var(--jia-text-primary);">
+                                        Financial Reporting — Strong Match</div>
+                                    <div style="font-size: 13px; color: var(--jia-text-muted);">3 years leading monthly
+                                        close process at PKF</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <span style="font-size: 16px; flex-shrink: 0;">✅</span>
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 500; color: var(--jia-text-primary);">
+                                        QuickBooks Certified — Required</div>
+                                    <div style="font-size: 13px; color: var(--jia-text-muted);">QuickBooks Advanced
+                                        Certification (2023)</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <span style="font-size: 16px; flex-shrink: 0;">✅</span>
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 500; color: var(--jia-text-primary);">
+                                        Location — Cebu City</div>
+                                    <div style="font-size: 13px; color: var(--jia-text-muted);">Based in Cebu, same city
+                                        as client</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                                <span style="font-size: 16px; flex-shrink: 0;">⚠️</span>
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 500; color: var(--jia-amber);">Salary
+                                        Expectation — Slightly Above Range</div>
+                                    <div style="font-size: 13px; color: var(--jia-text-muted);">Last known expected
+                                        salary: ₱35-40K (role budget: ₱30-38K). May need negotiation.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="glass-card no-hover" style="margin-bottom: 24px;">
+                        <h3 style="font-size: 15px; margin-bottom: 16px;">🛠️ Skills</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">CPA</span>
+                            <span class="skill-tag">Financial Reporting</span>
+                            <span class="skill-tag">QuickBooks</span>
+                            <span class="skill-tag">SAP</span>
+                            <span class="skill-tag">Tax Compliance</span>
+                            <span class="skill-tag">Audit</span>
+                            <span class="skill-tag">Excel (Advanced)</span>
+                            <span class="skill-tag">Month-End Close</span>
+                            <span class="skill-tag">BIR Filing</span>
+                            <span class="skill-tag">Financial Analysis</span>
+                        </div>
+                    </div>
+
+                    <!-- Contact Info (Partially Masked) -->
+                    <div class="glass-card no-hover">
+                        <h3 style="font-size: 15px; margin-bottom: 16px;">📞 Contact Information</h3>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="width: 20px; text-align: center;">📧</span>
+                                <span
+                                    style="font-size: 14px; color: var(--jia-text-secondary);">maria.s████@gmail.com</span>
+                                <button class="btn-ghost btn-sm"
+                                    onclick="this.previousElementSibling.textContent='maria.santos@gmail.com'; showToast('Email revealed')">Reveal</button>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="width: 20px; text-align: center;">📱</span>
+                                <span style="font-size: 14px; color: var(--jia-text-secondary);">+63 917 ████ 234</span>
+                                <button class="btn-ghost btn-sm"
+                                    onclick="this.previousElementSibling.textContent='+63 917 854 1234'; showToast('Phone number revealed')">Reveal</button>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="width: 20px; text-align: center;">🔗</span>
+                                <span
+                                    style="font-size: 14px; color: var(--jia-text-secondary);">linkedin.com/in/maria-santos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div>
+                    <!-- Jia History (Unique Differentiator) -->
+                    <div class="glass-card no-hover"
+                        style="margin-bottom: 24px; background: rgba(240, 249, 255, 0.6); border-color: rgb(200, 230, 250);">
+                        <h3 style="font-size: 15px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                            🦉 Jia History
+                            <span class="badge badge-purple" style="font-size: 10px;">UNIQUE TO JIA</span>
+                        </h3>
+
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">Jan 15, 2025</div>
+                                <div class="timeline-content">
+                                    <div style="font-weight: 500; color: var(--jia-text-primary); margin-bottom: 4px;">
+                                        Applied: Staff Accountant — DEF Corp</div>
+                                    <div>via Jia platform · Resume uploaded</div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-date">Jan 17, 2025</div>
+                                <div class="timeline-content">
+                                    <div style="font-weight: 500; color: var(--jia-text-primary); margin-bottom: 4px;">
+                                        AI Interview Completed</div>
+                                    <div style="margin-bottom: 8px;">Score: <strong
+                                            style="color: #34d399;">85/100</strong> · Duration: 18 min</div>
+                                    <div
+                                        style="background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--jia-text-secondary);">
+                                        <div
+                                            style="font-size: 11px; font-weight: 600; color: #34d399; margin-bottom: 4px;">
+                                            AI ASSESSMENT</div>
+                                        "Strong technical knowledge in accounting principles. Communicated clearly and
+                                        provided specific examples. Recommend for shortlist."
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-date">Jan 22, 2025</div>
+                                <div class="timeline-content">
+                                    <div style="font-weight: 500; color: var(--jia-text-primary); margin-bottom: 4px;">
+                                        Shortlisted by Recruiter</div>
+                                    <div>Added to final shortlist for DEF Corp</div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-date">Feb 5, 2025</div>
+                                <div class="timeline-content">
+                                    <div style="font-weight: 500; color: var(--jia-amber); margin-bottom: 4px;">Not
+                                        Selected — Client chose another candidate</div>
+                                    <div>Reason: Client preferred candidate with SAP FICO experience</div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-date">Jun 2025</div>
+                                <div class="timeline-content">
+                                    <div style="font-weight: 500; color: var(--jia-text-primary); margin-bottom: 4px;">
+                                        Outreach Sent — Java role (mismatch)</div>
+                                    <div>Email opened but not replied · Mismatched role</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="insight-card" style="margin-top: 16px;">
+                            <span class="insight-icon">💡</span>
+                            <div>
+                                <strong style="color: var(--jia-text-primary);">AI Recommendation:</strong> Maria is a
+                                strong re-engagement candidate. She interviewed well (85/100), was shortlisted, and
+                                wasn't selected due to a specific skill gap that doesn't apply to this new role. High
+                                likelihood of positive response.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Engagement Summary -->
+                    <div class="glass-card no-hover" style="margin-bottom: 24px;">
+                        <h3 style="font-size: 15px; margin-bottom: 16px;">📊 Engagement Summary</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: var(--jia-text-primary);">2</div>
+                                <div style="font-size: 12px; color: var(--jia-text-muted);">Total Contacts</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: #34d399;">1</div>
+                                <div style="font-size: 12px; color: var(--jia-text-muted);">Responses</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: var(--jia-text-primary);">85</div>
+                                <div style="font-size: 12px; color: var(--jia-text-muted);">AI Interview Score</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 28px; font-weight: 800; color: var(--jia-amber);">8 mo</div>
+                                <div style="font-size: 12px; color: var(--jia-text-muted);">Since Last Contact</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="glass-card no-hover">
+                        <h3 style="font-size: 15px; margin-bottom: 16px;">📝 Recruiter Notes</h3>
+                        <div
+                            style="font-size: 13px; color: var(--jia-text-secondary); margin-bottom: 12px; padding: 12px; background: #fafbfc; border-radius: 8px; border: 1px solid #eef2f7;">
+                            <div style="font-size: 11px; color: var(--jia-text-muted); margin-bottom: 4px;">Julia R. ·
+                                Jan 22, 2025</div>
+                            "Great candidate — very professional in her AI interview. Client went with someone who had
+                            SAP FICO but Maria would be perfect for roles that need QuickBooks expertise. Keep on
+                            radar."
+                        </div>
+                        <button class="btn-ghost btn-sm" onclick="showToast('Note added')">+ Add Note</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

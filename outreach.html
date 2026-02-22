@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jia Sourcing — Outreach</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar"></aside>
+
+        <main class="main-content">
+            <div class="breadcrumb">
+                <a href="index.html">Sourcing</a>
+                <span class="sep">›</span>
+                <a href="results.html">Results</a>
+                <span class="sep">›</span>
+                <span>Outreach Campaign</span>
+            </div>
+
+            <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <h1>📨 Outreach Campaign Builder</h1>
+                    <p class="subtitle">Senior Accountant — ABC Corp · 5 candidates selected</p>
+                </div>
+                <button class="btn-secondary" onclick="toggleTemplates()" id="toggleTemplatesBtn">📁 Templates
+                    Library</button>
+            </div>
+
+            <!-- Templates Library (collapsible) -->
+            <div id="templatesLibrary" style="display: none; margin-bottom: 32px;">
+                <div class="glass-card no-hover" style="padding: 24px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="font-size: 15px; color: var(--jia-text-secondary); margin: 0;">📁 Message Templates
+                        </h3>
+                        <button class="btn-primary" style="font-size: 12px; padding: 6px 14px;"
+                            onclick="showToast('Template editor coming soon')">+ New Template</button>
+                    </div>
+
+                    <!-- Stage 1 -->
+                    <div style="margin-bottom: 20px;">
+                        <div
+                            style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--jia-text-muted); margin-bottom: 10px;">
+                            Stage 1 — Initial Contact</div>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px;">
+                            <div class="glass-card" style="padding: 14px 18px; cursor: pointer;"
+                                onclick="loadTemplate('s1-email')">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span
+                                        style="font-size: 13px; font-weight: 600; color: var(--jia-text-primary);">Initial
+                                        Outreach</span>
+                                    <span
+                                        style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(159, 202, 237, 0.2); color: #2b6cb0; font-weight: 600;">📧
+                                        Email</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--jia-text-muted); margin: 0; line-height: 1.5;">
+                                    "Hi {first_name}, I came across your profile and was impressed by your experience
+                                    in..."</p>
+                                <div
+                                    style="font-size: 11px; color: var(--jia-text-muted); margin-top: 8px; display: flex; gap: 12px;">
+                                    <span>Used 24 times</span>
+                                    <span>68% open rate</span>
+                                </div>
+                            </div>
+                            <div class="glass-card" style="padding: 14px 18px; cursor: pointer;"
+                                onclick="loadTemplate('s1-sms')">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span
+                                        style="font-size: 13px; font-weight: 600; color: var(--jia-text-primary);">Quick
+                                        SMS Intro</span>
+                                    <span
+                                        style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(252, 206, 192, 0.25); color: #c4553d; font-weight: 600;">💬
+                                        SMS</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--jia-text-muted); margin: 0; line-height: 1.5;">
+                                    "Hi {first_name}! This is Julia from Jia. We have a great opportunity that matches
+                                    your background..."</p>
+                                <div
+                                    style="font-size: 11px; color: var(--jia-text-muted); margin-top: 8px; display: flex; gap: 12px;">
+                                    <span>Used 12 times</span>
+                                    <span>82% read rate</span>
+                                </div>
+                            </div>
+                            <div class="glass-card" style="padding: 14px 18px; cursor: pointer;"
+                                onclick="loadTemplate('s1-warm')">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span
+                                        style="font-size: 13px; font-weight: 600; color: var(--jia-text-primary);">Warm
+                                        Re-engage</span>
+                                    <span
+                                        style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(159, 202, 237, 0.2); color: #2b6cb0; font-weight: 600;">📧
+                                        Email</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--jia-text-muted); margin: 0; line-height: 1.5;">
+                                    "Hi {first_name}, we spoke a while back about a role. I have something new that
+                                    might be a better fit..."</p>
+                                <div
+                                    style="font-size: 11px; color: var(--jia-text-muted); margin-top: 8px; display: flex; gap: 12px;">
+                                    <span>Used 18 times</span>
+                                    <span>71% open rate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 1 Follow-ups -->
+                    <div style="margin-bottom: 20px;">
+                        <div
+                            style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--jia-text-muted); margin-bottom: 10px;">
+                            Stage 1 — Follow-ups</div>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px;">
+                            <div class="glass-card" style="padding: 14px 18px; cursor: pointer;"
+                                onclick="loadTemplate('s1f-gentle')">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span
+                                        style="font-size: 13px; font-weight: 600; color: var(--jia-text-primary);">Gentle
+                                        Reminder</span>
+                                    <span
+                                        style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(159, 202, 237, 0.2); color: #2b6cb0; font-weight: 600;">📧
+                                        Email</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--jia-text-muted); margin: 0; line-height: 1.5;">
+                                    "Just following up — I know things get busy. The role is still open and I'd love to
+                                    chat."</p>
+                                <div
+                                    style="font-size: 11px; color: var(--jia-text-muted); margin-top: 8px; display: flex; gap: 12px;">
+                                    <span>Used 20 times</span>
+                                    <span>45% reply rate</span>
+                                </div>
+                            </div>
+                            <div class="glass-card" style="padding: 14px 18px; cursor: pointer;"
+                                onclick="loadTemplate('s1f-sms')">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span style="font-size: 13px; font-weight: 600; color: var(--jia-text-primary);">SMS
+                                        Nudge</span>
+                                    <span
+                                        style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(252, 206, 192, 0.25); color: #c4553d; font-weight: 600;">💬
+                                        SMS</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--jia-text-muted); margin: 0; line-height: 1.5;">
+                                    "Hi {first_name}, just checking in — did you see my message about the {job_title}
+                                    role?"</p>
+                                <div
+                                    style="font-size: 11px; color: var(--jia-text-muted); margin-top: 8px; display: flex; gap: 12px;">
+                                    <span>Used 8 times</span>
+                                    <span>61% read rate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2 -->
+                    <div style="margin-bottom: 20px;">
+                        <div
+                            style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--jia-text-muted); margin-bottom: 10px;">
+                            Stage 2 — Interest Confirmed</div>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px;">
+                            <div class="glass-card" style="padding: 14px 18px; cursor: pointer;"
+                                onclick="loadTemplate('s2-interview')">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span style="font-size: 13px; font-weight: 600; color: var(--jia-text-primary);">AI
+                                        Interview Invite</span>
+                                    <span
+                                        style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(159, 202, 237, 0.2); color: #2b6cb0; font-weight: 600;">📧
+                                        Email</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--jia-text-muted); margin: 0; line-height: 1.5;">
+                                    "Great to hear you're interested! Here's a link to a quick 10-minute AI screening:
+                                    {jia_interview_link}"</p>
+                                <div
+                                    style="font-size: 11px; color: var(--jia-text-muted); margin-top: 8px; display: flex; gap: 12px;">
+                                    <span>Used 15 times</span>
+                                    <span>89% completion</span>
+                                </div>
+                            </div>
+                            <div class="glass-card" style="padding: 14px 18px; cursor: pointer;"
+                                onclick="loadTemplate('s2-details')">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span
+                                        style="font-size: 13px; font-weight: 600; color: var(--jia-text-primary);">Role
+                                        Details & Benefits</span>
+                                    <span
+                                        style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(159, 202, 237, 0.2); color: #2b6cb0; font-weight: 600;">📧
+                                        Email</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--jia-text-muted); margin: 0; line-height: 1.5;">
+                                    "Here's more detail about the role, including compensation, benefits, and team
+                                    structure..."</p>
+                                <div
+                                    style="font-size: 11px; color: var(--jia-text-muted); margin-top: 8px; display: flex; gap: 12px;">
+                                    <span>Used 10 times</span>
+                                    <span>74% reply rate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2 Follow-ups -->
+                    <div>
+                        <div
+                            style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--jia-text-muted); margin-bottom: 10px;">
+                            Stage 2 — Follow-ups</div>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px;">
+                            <div class="glass-card" style="padding: 14px 18px; cursor: pointer;"
+                                onclick="loadTemplate('s2f-interview')">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span
+                                        style="font-size: 13px; font-weight: 600; color: var(--jia-text-primary);">Interview
+                                        Reminder</span>
+                                    <span
+                                        style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(159, 202, 237, 0.2); color: #2b6cb0; font-weight: 600;">📧
+                                        Email</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--jia-text-muted); margin: 0; line-height: 1.5;">
+                                    "Haven't had a chance to complete the screening yet? No worries — here's the link
+                                    again: {jia_interview_link}"</p>
+                                <div
+                                    style="font-size: 11px; color: var(--jia-text-muted); margin-top: 8px; display: flex; gap: 12px;">
+                                    <span>Used 9 times</span>
+                                    <span>52% completion</span>
+                                </div>
+                            </div>
+                            <div class="glass-card" style="padding: 14px 18px; cursor: pointer;"
+                                onclick="loadTemplate('s2f-sms')">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <span style="font-size: 13px; font-weight: 600; color: var(--jia-text-primary);">SMS
+                                        Interview Nudge</span>
+                                    <span
+                                        style="font-size: 10px; padding: 2px 8px; border-radius: 10px; background: rgba(252, 206, 192, 0.25); color: #c4553d; font-weight: 600;">💬
+                                        SMS</span>
+                                </div>
+                                <p style="font-size: 12px; color: var(--jia-text-muted); margin: 0; line-height: 1.5;">
+                                    "Hi {first_name} — quick reminder about the AI screening. It only takes 10 mins!
+                                    {jia_interview_link}"</p>
+                                <div
+                                    style="font-size: 11px; color: var(--jia-text-muted); margin-top: 8px; display: flex; gap: 12px;">
+                                    <span>Used 6 times</span>
+                                    <span>78% read rate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campaign Settings -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px;">
+
+                <!-- Channel Selection -->
+                <div class="glass-card no-hover">
+                    <h3 style="font-size: 15px; margin-bottom: 16px; color: var(--jia-text-secondary);">Channel</h3>
+                    <div class="channel-selector">
+                        <button class="channel-option active"
+                            onclick="this.parentElement.querySelectorAll('.channel-option').forEach(o=>o.classList.remove('active')); this.classList.add('active')">
+                            📧 Email
+                        </button>
+                        <button class="channel-option"
+                            onclick="this.parentElement.querySelectorAll('.channel-option').forEach(o=>o.classList.remove('active')); this.classList.add('active')">
+                            💬 SMS
+                        </button>
+                        <button class="channel-option"
+                            onclick="this.parentElement.querySelectorAll('.channel-option').forEach(o=>o.classList.remove('active')); this.classList.add('active')">
+                            📧💬 Both
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Campaign Summary -->
+                <div class="glass-card no-hover">
+                    <h3 style="font-size: 15px; margin-bottom: 16px; color: var(--jia-text-secondary);">Campaign Summary
+                    </h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center;">
+                        <div>
+                            <div style="font-size: 24px; font-weight: 700; color: var(--jia-text-primary);">5</div>
+                            <div style="font-size: 11px; color: var(--jia-text-muted);">Recipients</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 24px; font-weight: 700; color: var(--jia-text-primary);">3</div>
+                            <div style="font-size: 11px; color: var(--jia-text-muted);">Follow-ups</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 24px; font-weight: 700; color: var(--jia-text-primary);">~72%</div>
+                            <div style="font-size: 11px; color: var(--jia-text-muted);">Predicted Open</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Generated Message -->
+            <div style="margin-bottom: 32px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h3 style="font-size: 15px; color: var(--jia-text-secondary);">✨ AI-Generated Initial Outreach</h3>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-ghost btn-sm" onclick="regenerateMessage()">🔄 Regenerate</button>
+                        <button class="btn-ghost btn-sm" onclick="showToast('Tone: Professional')">🎨 Change
+                            Tone</button>
+                    </div>
+                </div>
+
+                <div class="message-editor">
+                    <div class="editor-toolbar">
+                        <span>📧 Subject:</span>
+                        <span style="color: var(--jia-text-primary); font-weight: 500;">
+                            Hi {first_name}, a Senior Accountant opportunity that matches your background
+                        </span>
+                    </div>
+                    <textarea id="messageBody">Hi {first_name},
+
+I came across your profile and was impressed by your {years_experience} years in {skill_area}. We're currently looking for a Senior Accountant for one of our clients in Cebu, and I think you'd be a strong fit.
+
+The role involves financial reporting, tax compliance, and audit preparation — areas where your experience at {current_company} would really shine.
+
+Would you be open to a quick chat? Or if you'd prefer, you can complete a brief 10-minute AI screening here:
+{jia_interview_link}
+
+Looking forward to hearing from you!
+
+Best regards,
+Julia R.
+Senior Recruiter</textarea>
+                </div>
+
+                <div class="insight-card" style="margin-top: 12px;">
+                    <span class="insight-icon">💡</span>
+                    <div>
+                        <strong style="color: var(--jia-text-primary);">AI Personalization:</strong> Each recipient will
+                        receive a unique version with their specific skills, experience, and company name inserted. The
+                        <code
+                            style="background: rgba(240, 249, 255, 0.6); padding: 2px 6px; border-radius: 4px; color: var(--jia-text-secondary);">{jia_interview_link}</code>
+                        bridges directly into Jia's AI Interview — Jia's unique advantage.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Follow-up Sequence -->
+            <div style="margin-bottom: 32px;">
+                <h3 style="font-size: 15px; margin-bottom: 16px; color: var(--jia-text-secondary);">📅 Follow-up
+                    Sequence</h3>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">Day 0 — Initial Send</div>
+                        <div class="timeline-content">
+                            <div class="glass-card" style="padding: 14px 18px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 14px; font-weight: 500;">📧 Initial Outreach Email</span>
+                                    <span class="badge badge-fit-high" style="font-size: 11px;">Active</span>
+                                </div>
+                                <p style="font-size: 13px; color: var(--jia-text-muted); margin-top: 4px;">Personalized
+                                    message with role details and Jia interview link</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">Day 3 — First Follow-up (if no reply)</div>
+                        <div class="timeline-content">
+                            <div class="glass-card" style="padding: 14px 18px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 14px; font-weight: 500;">📧 Gentle Reminder</span>
+                                    <span class="badge badge-purple" style="font-size: 11px;">Scheduled</span>
+                                </div>
+                                <p style="font-size: 13px; color: var(--jia-text-muted); margin-top: 4px;">"Just
+                                    following up — I know things get busy. The role is still open and I'd love to chat."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-date">Day 7 — Second Follow-up (if no reply)</div>
+                        <div class="timeline-content">
+                            <div class="glass-card" style="padding: 14px 18px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 14px; font-weight: 500;">📧 Final Touchpoint + Value
+                                        Add</span>
+                                    <span class="badge badge-purple" style="font-size: 11px;">Scheduled</span>
+                                </div>
+                                <p style="font-size: 13px; color: var(--jia-text-muted); margin-top: 4px;">"One last
+                                    note — here's what our client offers (benefits list). Even if the timing isn't
+                                    right, I'd love to keep in touch."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item" style="margin-bottom: 0;">
+                        <div class="timeline-date">Day 10+ — Candidate Responds</div>
+                        <div class="timeline-content">
+                            <div class="glass-card"
+                                style="padding: 14px 18px; background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 14px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 14px; font-weight: 500; color: #34d399;">🎯 Auto-invite to
+                                        Jia AI Interview</span>
+                                    <span class="badge badge-fit-high" style="font-size: 11px;">Automated</span>
+                                </div>
+                                <p style="font-size: 13px; color: var(--jia-text-muted); margin-top: 4px;">When
+                                    candidate replies positively, automatically send AI interview link (Jia's
+                                    closed-loop advantage)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview per candidate -->
+            <div style="margin-bottom: 32px;">
+                <h3 style="font-size: 15px; margin-bottom: 16px; color: var(--jia-text-secondary);">👥 Preview by
+                    Recipient</h3>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+
+                    <div class="glass-card"
+                        style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div
+                                style="width: 32px; height: 32px; border-radius: 8px; background: #1a1a2e; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: white;">
+                                MS</div>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 500;">Maria Santos</div>
+                                <div style="font-size: 12px; color: var(--jia-text-muted);">maria.santos@email.com</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge-fit-high" style="font-size: 11px;">92% Fit</span>
+                            <button class="btn-ghost btn-sm">Preview ›</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card"
+                        style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div
+                                style="width: 32px; height: 32px; border-radius: 8px; background: #32325d; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: white;">
+                                RC</div>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 500;">Rafael Cruz</div>
+                                <div style="font-size: 12px; color: var(--jia-text-muted);">r.cruz@email.com</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge-fit-high" style="font-size: 11px;">88% Fit</span>
+                            <button class="btn-ghost btn-sm">Preview ›</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card"
+                        style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div
+                                style="width: 32px; height: 32px; border-radius: 8px; background: #8898aa; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: white;">
+                                JY</div>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 500;">Jasmine Yap</div>
+                                <div style="font-size: 12px; color: var(--jia-text-muted);">jasmine.yap@email.com</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge badge-fit-high" style="font-size: 11px;">85% Fit</span>
+                            <button class="btn-ghost btn-sm">Preview ›</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div
+                style="display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid var(--jia-border);">
+                <button class="btn-secondary" onclick="showToast('Campaign saved as draft')">
+                    💾 Save Draft
+                </button>
+                <button class="btn-primary" onclick="launchCampaign()" style="font-size: 15px; padding: 12px 28px;">
+                    🚀 Launch Campaign
+                </button>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        function regenerateMessage() {
+            const textarea = document.getElementById('messageBody');
+            const original = textarea.value;
+            textarea.value = '';
+            textarea.style.color = 'var(--jia-text-secondary)';
+
+            const newMessage = `Hi {first_name},
+
+Your background in {skill_area} caught my attention — especially your work at {current_company} over the past {years_experience} years.
+
+I'm reaching out because one of our clients in Cebu is looking for a Senior Accountant who understands financial reporting and compliance at a high level. Based on your experience, I think this could be a great next step.
+
+If you're curious, you can learn more and complete a quick 10-minute AI screening here:
+{jia_interview_link}
+
+No pressure at all — happy to share more details if you're interested.
+
+Cheers,
+Julia R.
+Senior Recruiter`;
+
+            typeText(textarea, newMessage, 15, () => {
+                textarea.style.color = '';
+                showToast('✨ New message generated');
+            });
+        }
+
+        function launchCampaign() {
+            showToast('🚀 Campaign launched! 5 messages queued for sending.');
+            setTimeout(() => {
+                window.location.href = 'analytics.html';
+            }, 2000);
+        }
+
+        function toggleTemplates() {
+            const lib = document.getElementById('templatesLibrary');
+            const btn = document.getElementById('toggleTemplatesBtn');
+            if (lib.style.display === 'none') {
+                lib.style.display = 'block';
+                btn.textContent = '✕ Close Templates';
+            } else {
+                lib.style.display = 'none';
+                btn.textContent = '📁 Templates Library';
+            }
+        }
+
+        function loadTemplate(id) {
+            const templates = {
+                's1-email': `Hi {first_name},\n\nI came across your profile and was impressed by your {years_experience} years in {skill_area}. We're currently looking for a Senior Accountant for one of our clients in Cebu, and I think you'd be a strong fit.\n\nThe role involves financial reporting, tax compliance, and audit preparation — areas where your experience at {current_company} would really shine.\n\nWould you be open to a quick chat? Or if you'd prefer, you can complete a brief 10-minute AI screening here:\n{jia_interview_link}\n\nLooking forward to hearing from you!\n\nBest regards,\nJulia R.\nSenior Recruiter`,
+                's1-sms': `Hi {first_name}! This is Julia from Jia. We have a Senior Accountant opportunity in Cebu that matches your {skill_area} background. Interested? Reply YES or check it out here: {jia_interview_link}`,
+                's1-warm': `Hi {first_name},\n\nWe spoke a while back about a role, and I wanted to reach out again because I have something new that might be a better fit.\n\nOne of our clients in Cebu is hiring a Senior Accountant, and your {skill_area} experience at {current_company} is exactly what they're looking for.\n\nWould you be open to exploring this? Here's a quick AI screening if you're curious:\n{jia_interview_link}\n\nBest,\nJulia R.`,
+                's1f-gentle': `Hi {first_name},\n\nJust following up on my earlier message — I know things get busy! The Senior Accountant role is still open, and I'd love to chat if you're interested.\n\nHere's the AI screening link again in case it's easier:\n{jia_interview_link}\n\nNo pressure at all.\n\nBest,\nJulia R.`,
+                's1f-sms': `Hi {first_name}, just checking in — did you see my message about the Senior Accountant role? Still open if you're interested! {jia_interview_link}`,
+                's2-interview': `Hi {first_name},\n\nGreat to hear you're interested in the Senior Accountant role! The next step is a quick 10-minute AI screening — it's conversational and you can do it anytime.\n\nHere's your link:\n{jia_interview_link}\n\nLet me know if you have any questions!\n\nBest,\nJulia R.`,
+                's2-details': `Hi {first_name},\n\nThanks for your interest! Here's a bit more about the role:\n\n• Position: Senior Accountant\n• Company: ABC Corp\n• Location: Cebu City (On-site)\n• Salary: ₱40,000–₱55,000/month\n• Benefits: HMO, 13th month, performance bonus\n\nLet me know if you'd like to proceed!\n\nBest,\nJulia R.`,
+                's2f-interview': `Hi {first_name},\n\nHaven't had a chance to complete the AI screening yet? No worries — here's the link again. It only takes about 10 minutes:\n{jia_interview_link}\n\nFeel free to do it whenever works for you.\n\nBest,\nJulia R.`,
+                's2f-sms': `Hi {first_name} — quick reminder about the AI screening for the Senior Accountant role. Only takes 10 mins! {jia_interview_link}`
+            };
+
+            const textarea = document.getElementById('messageBody');
+            if (templates[id]) {
+                textarea.value = templates[id];
+                showToast('✨ Template loaded — customize as needed');
+                // Close templates and scroll to editor
+                document.getElementById('templatesLibrary').style.display = 'none';
+                document.getElementById('toggleTemplatesBtn').textContent = '📁 Templates Library';
+                textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    </script>
+</body>
+
+</html>
