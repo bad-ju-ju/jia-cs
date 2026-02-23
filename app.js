@@ -3,8 +3,17 @@
 // Sidebar navigation, animations, interactions
 // ========================================================
 
-// Current page detection
-const currentPage = window.location.pathname.split('/').pop() || 'setup.html';
+// Current page detection — robust for file://, localhost, and Netlify clean URLs
+const currentPage = (() => {
+  let path = window.location.pathname.split('/').pop() || '';
+  // Strip query string and hash
+  path = path.split('?')[0].split('#')[0];
+  // Decode URI in case of %20 etc
+  path = decodeURIComponent(path);
+  // Netlify serves clean URLs: /search instead of /search.html
+  if (path && !path.includes('.')) path += '.html';
+  return path || 'setup.html';
+})();
 
 // Sidebar HTML (injected into every page)
 function renderSidebar() {
